@@ -15,8 +15,8 @@ namespace Iterador1
 			Reset();
 		}
 		public void Agregar(int a) => datos.Add(a);
-
-		// Recorrer
+		
+		// Iterar
 		int posicion;
 		public void Reset() => posicion = -1;
 		public bool MoveNext() => ++posicion < datos.Count;
@@ -24,7 +24,6 @@ namespace Iterador1
 	}
 	class Demo
 	{
-
 		static void Main(string[] args)
 		{
 			Console.WriteLine(">> Demo 1");

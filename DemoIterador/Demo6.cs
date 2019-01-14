@@ -23,7 +23,7 @@ namespace Iterador6
 				yield return i;
 		}
 
-		public IEnumerable<int>GetReverse()
+		public IEnumerable<int>GetInvertido()
 		{
 			var tmp = new List<int>(datos);
 			tmp.Reverse();
@@ -53,7 +53,7 @@ namespace Iterador6
 			lista.Recorrer();
 
 			Console.WriteLine(" 2º Recorrido");
-			lista.GetReverse().Recorrer();
+			lista.GetInvertido().Recorrer();
 
 			Console.ReadLine();
 		}

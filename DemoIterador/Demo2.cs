@@ -34,7 +34,7 @@ namespace Iterador2
 		}
 		public void Agregar(int a) => datos.Add(a);
 
-		// Recorrer
+		// Iterar
 		int posicion;
 		public void Reset() => posicion = -1;
 		public bool MoveNext() => ++posicion < datos.Count;
