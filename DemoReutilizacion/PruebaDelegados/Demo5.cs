@@ -32,6 +32,9 @@ namespace Demo5
 		}
 
 		public override string ToString() => $"{ Nombre } ({ Edad } años)";
+
+		public static bool operator <(Persona a, Persona b) => a.CompareTo(b) < 0;
+		public static bool operator >(Persona a, Persona b) => a.CompareTo(b) > 0;
 	}
 	class Demo
 	{
