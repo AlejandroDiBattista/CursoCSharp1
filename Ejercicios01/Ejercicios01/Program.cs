@@ -10,12 +10,40 @@ namespace Ejercicios01
 		{
 			void Registrar( string frase );
 			int Frecuencia( string palabra );
-			IEnumerable<(string palabra, int frecuencia)> Top(int cantidad); 
+			IEnumerable<(string palabra, int frecuencia)> Top( int cantidad );
+			IEnumerable<string> Palabras();
 		}
 
-		
-		static void Main( string[] args )
-		{ 
+		class CalcularFrecuencia : ICalcularFrecuencia
+		{
+			Dictionary<string, int> contar = new Dictionary<string, int>();
+			public int Frecuencia( string palabra ) => contar.ContainsKey( palabra ) ? contar[ palabra ] : 0;
+
+			public IEnumerable<string> Palabras()
+			{
+				return contar.Keys;
+			}
+
+			public void Registrar( string frase )
+			{
+				foreach( var palabra in frase.Split( " " ).Where( i => i.Length > 3 ) )
+				{
+					if( !contar.ContainsKey( palabra ) ) contar[ palabra ] = 0;
+					contar[ palabra ] += 1;
+				}
+			}
+
+			public IEnumerable<(string palabra, int frecuencia)> Top( int cantidad )
+			{
+				return contar
+							.Select( e => (palabra: e.Key, frecuencia: e.Value) )
+							.OrderByDescending( e => e.frecuencia )
+							.Take( cantidad );
+			}
+
+		}
+		static void Main1( string[] args )
+		{
 			ICalcularFrecuencia c = new CalcularFrecuencia();
 			c.Registrar( "el perro persigue al gato" );
 			c.Registrar( "el gato escapa del perro" );
@@ -27,11 +55,12 @@ namespace Ejercicios01
 			c.Registrar( "el gato es cobarde" );
 			c.Registrar( "el raton no es verde" );
 
-			Console.WriteLine("PROBANDO Cálculo de Frecuencia");
+			Console.WriteLine( "PROBANDO Cálculo de Frecuencia" );
+			Test( c.Palabras().Count(), 10, "Cantidad de palabras diferentes" );
 
 			Test( c.Frecuencia( "el" ), 0, "Ignora las palabras cortas (<=3)" );
-			Test( c.Frecuencia( "del" ), 0, "Ignora las palabras cortas (<=3)" );
-			Test( c.Frecuencia( "gato" ), 4, "Hay 5 gatos" );
+			Test( c.Frecuencia( "leon" ), 0, "Ignora las palabras que no esten registradas" );
+			Test( c.Frecuencia( "gato" ), 5, "Hay 5 gatos" );
 			Test( c.Frecuencia( "raton" ), 3, "Hay 3 ratones" );
 
 			var m = c.Top( 3 );
