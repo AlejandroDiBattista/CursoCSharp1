@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <StartupObject>Ejercicios03.PruebaEnumerable</StartupObject>
   </PropertyGroup>
 
 </Project>
