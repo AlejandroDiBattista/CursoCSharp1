@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Ejercicios03
 {
-	static class PruebaEnumerable
+	static class Program
 	{
 		static TResult Agregador<TSource, TResult>( this IEnumerable<TSource> lista, TResult inicial, Func<TResult, TSource, TResult> acumulador )
 		{
@@ -70,25 +70,29 @@ namespace Ejercicios03
 
 		static IEnumerable<int> M3()
 		{
-			for( var i = 3; i <= 18; i += 3 )
+			for( var i = 3; i <= 18; i += 3 ) {
 				yield return i;
+			}
 		}
 
+		static string Convertir<T>( IGrouping<int, IEnumerable<int>> grupo )
+		{
+			return $"[ {grupo.Key} : {string.Join( " ", grupo )} ]";
+		}
+
+		static string Convertir<T>( IEnumerable<T> lista )
+		{
+			return $"[ {string.Join( " ", lista.Select( Convertir ) )} ]";
+		}
 		static string Convertir<T>( T valor )
 		{
-			if( valor is IGrouping<int, int> grupo ) {
-				return $"[ {grupo.Key} : {string.Join( " ", grupo )} ]";
-			} else if( valor is IEnumerable<T> lista ) {
-				return $"[ {string.Join( " ", lista.Select( Convertir ) )} ]";
-			} else {
-				return valor.ToString();
-			}
+			return valor.ToString();
 		}
 		static void Mostrar<T>( this IEnumerable<T> lista, string mensaje = "" )
 		{
 			Console.Write( $" > {mensaje,-20} " );
 			foreach( var item in lista ) {
-				Console.Write( $" { Convertir( item ),4}" );
+				Console.Write( $" { Convertir( item ), 4}" );
 			}
 			Console.WriteLine();
 		}
@@ -102,36 +106,41 @@ namespace Ejercicios03
 		}
 		static void Main( string[] args )
 		{
-			var m2 = new int[] { 2, 4, 6, 8, 10, 12 };  // M2();
-			var m3 = new int[] { 3, 6, 9, 12, 15, 18 }; // M3();
-			var m23 = m2.Concat( m3 );
+			IEnumerable<int> m2 = new int[] { 2, 4, 6, 8, 10, 12 };  // M2();
+			IEnumerable<int> m3 = new int[] { 3, 6, 9, 12, 15, 18 }; // M3();
+			IEnumerable<int> m23 = m2.Concat( m3 );
 
-			Titulo( "FUENTE DE DATOS" );
-			m2.Mostrar( "m2" );
-			M2().Mostrar( "M2" );
-			m3.Mostrar( "m3" );
-			M3().Mostrar( "M3" );
-			Console.WriteLine();
+
+			//Titulo( "FUENTE DE DATOS" );
+			//m2.Mostrar( "m2" );
+			//M2().Mostrar( "M2" );
+			//m3.Mostrar( "m3" );
+			//M3().Mostrar( "M3" );
+			//Console.WriteLine();
+
+			Titulo( "GENERA DATOS" );
+			Enumerable.Range( 1, 10 ).Mostrar( "Range 1..10" );
+			Enumerable.Repeat( 10, 5 ).Mostrar( "Repeat 10 x 5" );
 
 			Titulo( "TRANSFORMA" );
 			m2.Select( i => i * i ).Mostrar( "Select i*i" );
 
 			Titulo( "OPERACIONES CONJUNTO" );
-			m2.Intersect( m3 ).Mostrar( "Intersect" );
-			m2.Union( m3 ).Mostrar( "Union" );
+			m2.Intersect( m3 ).Mostrar( "Intersect m2*m3" );
+			m2.Union( m3 ).Mostrar( "Union m2+m3" );
 			m2.Except( m3 ).Mostrar( "Except m2-m3" );
+			m3.Except( m2 ).Mostrar( "Except m3-m2" );
 
 			Titulo( "FUNCIONES AGREGAR ELEMENTOS" );
 			m2.Concat( m3 ).Mostrar( "Concat m2+m3" );
 			m2.Append( 100 ).Mostrar( "Append M2+100" );
 			m2.Prepend( 100 ).Mostrar( "Prepend 100" );
 
-			Titulo( "GENERA DATOS" );
-			Enumerable.Range( 1, 10 ).Mostrar( "Range 1..10" );
-			Enumerable.Repeat( 10, 5 ).Mostrar( "Repeat 10 x 5" );
 
 			Titulo( "ORDENA" );
-			m2.OrderBy( i => i ).Mostrar( "OrderBy" );
+
+			m2.OrderBy( i => i % 3).Mostrar( "OrderBy %3" );
+			m2.OrderBy( i => i % 3 ).ThenByDescending(i => i).Mostrar( "ThenBy" );
 			m2.OrderByDescending( i => i ).Mostrar( "OrderByDescending" );
 			m2.Reverse().Mostrar( "Reverse" );
 
@@ -143,18 +152,18 @@ namespace Ejercicios03
 
 			Titulo( "FILTRAR DATOS" );
 			m2.Where( i => i < 10 ).Mostrar( "Where < 10" );
-			m23.Distinct().Mostrar( "Distint (m23)" );
+
 			m2.SkipWhile( i => i < 7 ).Mostrar( "SkipWhile < 7" );
 			m2.TakeWhile( i => i < 7 ).Mostrar( "TakeWhile < 7" );
+			m23.Distinct().Mostrar( "Distint (m23)" );
 
 			Titulo( "AGRUPAR DATOS" );
 			m2.GroupBy( i => i % 3 ).Mostrar( "GroupBy m2 % 3" );
 			m2.Zip( m3, ( a, b ) => $"({a}, {b})" ).Mostrar( "Zip" );
 
 			Titulo( "CALCULAR VALORES" );
-			Mostrar( "Aggregate s+i", m2.Aggregate( ( s, i ) => s + i ) );
+			Mostrar( "Aggregate s+i", m2.Aggregate( ( acumulador, elemento ) => acumulador + elemento ) );
 			Mostrar( "Aggregate s+i.lenght", "uno dos tres cuatro cinco".Split(" ").Aggregate(0, ( s, i ) => s + i.Length ) );
-
 			Mostrar( "Sum ", m2.Sum());
 			Mostrar( "Count", m2.Count() );
 			Mostrar( "Count <7", m2.Count(i => i < 7) );
@@ -164,7 +173,6 @@ namespace Ejercicios03
 			Mostrar( "Contains 6", m2.Contains( 6) );
 			Mostrar( "Min", m2.Min() );
 			Mostrar( "Max", m2.Max() );
-
 
 			Console.ReadLine();
 		}

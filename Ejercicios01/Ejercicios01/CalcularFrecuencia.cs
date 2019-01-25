@@ -42,7 +42,7 @@ namespace Ejercicios01
 			}
 
 		}
-		static void Main1( string[] args )
+		static void Main( string[] args )
 		{
 			ICalcularFrecuencia c = new CalcularFrecuencia();
 			c.Registrar( "el perro persigue al gato" );

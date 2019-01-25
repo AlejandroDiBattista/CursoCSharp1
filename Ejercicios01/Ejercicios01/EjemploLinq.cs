@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Ejercicios04
 {
-	static class EjemploLinq
+	static class Program
 	{
 		public class Persona
 		{
@@ -23,30 +23,42 @@ namespace Ejercicios04
 			}
 			Console.WriteLine();
 		}
-
-
+	
 
 		static void Main( string[] args )
 		{
 			Console.WriteLine( "DEMOSTRACION LinQ" );
 
-			var salida = from p in TraerPersonas() where p.Hombre && p.Edad < 50 select new { p.Nombre, p.Edad };
-			foreach( var p in salida ) {
-				Console.WriteLine( p );
+			var s1 = from p in TraerPersonas()
+						where p.Hombre && p.Edad < 50
+						orderby p.Nombre
+						select new { p.Nombre, p.Edad };
+
+			var s2 = TraerPersonas()
+						.Where( p => p.Hombre && p.Edad < 50 )
+						.OrderBy( p => p.Edad)
+						.Select( p => new { p.Nombre, p.Edad} );
+
+			foreach( var p in s1 ) {
+				Console.WriteLine(p.GetType());
+				Console.WriteLine( p.Nombre );
 			}
 			Console.ReadLine();
 		}
 
 		static IEnumerable<Persona> TraerPersonas()
 		{
-			yield return new Persona() { Nombre = "Alejandro", Edad = 50, Hombre = true };
-			yield return new Persona() { Nombre = "Juan", Edad = 40, Hombre = true };
-			yield return new Persona() { Nombre = "Jose", Edad = 30, Hombre = true };
-			yield return new Persona() { Nombre = "Alejandra", Edad = 30, Hombre = false };
-			yield return new Persona() { Nombre = "Juana", Edad = 40, Hombre = false };
-			yield return new Persona() { Nombre = "Josefa", Edad = 50, Hombre = false };
-			yield return new Persona() { Nombre = "Mario", Edad = 20, Hombre = true };
-			yield return new Persona() { Nombre = "Maria", Edad = 10, Hombre = false };
+			Console.WriteLine("TraerPersonas");
+
+			yield return new Persona() { Nombre = "Alejandro",	Edad = 50, Hombre = true  };
+			yield return new Persona() { Nombre = "Juan",		Edad = 40, Hombre = true  };
+			yield return new Persona() { Nombre = "Jose",		Edad = 30, Hombre = true  };
+			yield return new Persona() { Nombre = "Alejandra",	Edad = 30, Hombre = false };
+
+			yield return new Persona() { Nombre = "Juana",		Edad = 40, Hombre = false };
+			yield return new Persona() { Nombre = "Josefa",		Edad = 50, Hombre = false };
+			yield return new Persona() { Nombre = "Mario",		Edad = 20, Hombre = true  };
+			yield return new Persona() { Nombre = "Maria",		Edad = 10, Hombre = false };
 		}
 	}
 }

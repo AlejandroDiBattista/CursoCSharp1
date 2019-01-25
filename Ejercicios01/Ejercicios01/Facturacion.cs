@@ -91,7 +91,7 @@ namespace Ejercicios02
 			};
 		}
 	}
-	class DemoFacturacion
+	class Program
 	{
 		static void Main( string[] args )
 		{

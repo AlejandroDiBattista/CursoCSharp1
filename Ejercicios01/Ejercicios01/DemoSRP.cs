@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ejercicios02
+namespace Ejercicios09
 {
 	class Persona
 	{
 		public string Nombre { get; set; }
 		public string Apellido { get; set; }
 	}
-	class DemoSRP
+	class Program
 	{
 		static void Main( string[] args )
 		{

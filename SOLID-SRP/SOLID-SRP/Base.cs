@@ -12,7 +12,6 @@ namespace Solid
 			public string Apellido { get; set; }
 		}
 
-
 		class DemoSRP
 		{
 			static void Main( string[] args )
