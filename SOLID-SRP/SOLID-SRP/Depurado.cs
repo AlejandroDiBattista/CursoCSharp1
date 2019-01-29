@@ -14,7 +14,7 @@ namespace Solid
 
 		class Mensajes
 		{
-			public static void Bienvenida() => Console.WriteLine( "Alta de usuarios de AMASIN!" );
+			public static void Bienvenida() => Console.WriteLine( "Alta de usuarios de AMAZIN!" );
 			public static void Finalizar()
 			{
 				Console.Write( "Presiona <ENTER> para finalizar" );
