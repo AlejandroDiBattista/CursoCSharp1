@@ -11,7 +11,7 @@ namespace Ejercicios11
 		void Agregar( string clave, int valor );
 		int? Recuperar( string clave );
 	}
-	class DicLista: IDic
+	class DicLista : IDic
 	{
 		class Par
 		{
@@ -106,7 +106,10 @@ namespace Ejercicios11
 			if( Contiene( clave ) ) return;
 
 			var i = Hash( clave );
-			lista[ i ] = lista[ i ] ?? new List<Par>();
+			if( lista[ i ] == null )
+				lista[ i ] = new List<Par>();
+
+			//lista[ i ] = lista[ i ] ?? new List<Par>();
 			lista[ i ].Add( new Par { Clave = clave, Valor = valor } );
 		}
 
@@ -118,7 +121,7 @@ namespace Ejercicios11
 			return lista[ i ].Find( j => j.Clave == clave ).Valor;
 		}
 
-		public int? this[string clave ]
+		public int? this[ string clave ]
 		{
 			get => Recuperar( clave );
 			set => Agregar( clave, value ?? 0 );
@@ -129,11 +132,12 @@ namespace Ejercicios11
 
 	class DemoMiniDic
 	{
-		static void Mostrar(IDic d )
+		static void Mostrar( IDic d )
 		{
-			Console.WriteLine($"DEMO {d.GetType().Name}");
+			Console.WriteLine( $"DEMO {d.GetType().Name}" );
 			d.Agregar( "uno", 1 );
 			d.Agregar( "dos", 2 );
+
 			Console.WriteLine( $" · Contiene(uno)  => {d.Contiene( "uno" )}" );
 			Console.WriteLine( $" · Contiene(tres) => {d.Contiene( "tres" )}" );
 			Console.WriteLine( $" · Recuperar(dos) => {d.Recuperar( "dos" )}" );
@@ -142,17 +146,17 @@ namespace Ejercicios11
 
 		static void Main( string[] args )
 		{
-			Console.WriteLine("*DEMO Dicionario");
-			Mostrar( new DicLista() );
-			Mostrar( new DicHash() );
-			Mostrar( new DicHashList() );
+			//Console.WriteLine( "*DEMO Dicionario" );
+			////Mostrar( new DicLista() );
+			//Mostrar( new DicHash() );
+			////Mostrar( new DicHashList() );
 
-			Console.WriteLine("DEMO []");
+			Console.WriteLine( "DEMO []" );
 			var d = new DicHashList();
 			d[ "uno" ] = 1;
 			d[ "dos" ] = 2;
 			Console.WriteLine( $" · Recuperar(dos) => {d.Recuperar( "dos" )}" );
-			Console.WriteLine( $" · [dos] => {d["dos"]}" );
+			Console.WriteLine( $" · [dos] => {d[ "dos" ]}" );
 			Console.ReadLine();
 		}
 	}
