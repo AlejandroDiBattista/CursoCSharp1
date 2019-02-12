@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Collections;
+using static System.Math;
 
 namespace Ejercicios14
 {
 	public static class Consola
 	{
-		public static void Pausa(string texto = "Pulsar <ENTER> para continuar..." )
+		public static void Pausa( string texto = "Pulsar <ENTER> para continuar..." )
 		{
-			Mostrar(texto, ConsoleColor.Red);
+			Mostrar( texto, ConsoleColor.Red, true );
 			while( Console.ReadKey().Key != ConsoleKey.Enter ) { }
 		}
 		public static void Titulo( string titulo, int ancho = 40 )
@@ -22,19 +23,22 @@ namespace Ejercicios14
 			Console.WriteLine();
 			Destacar = true;
 		}
-		public static void Mostrar( string texto )
+		public static void Mostrar( string texto, bool continuar = false )
 		{
-			Console.WriteLine( texto );
+			if( continuar )
+				Console.Write( texto );
+			else
+				Console.WriteLine( texto );
 		}
-		public static void Mostrar( string texto, ConsoleColor color )
+		public static void Mostrar( string texto, ConsoleColor color, bool continuar = false )
 		{
 			var tmp = Color;
 			Color = color;
-			Mostrar( texto );
+			Mostrar( texto, continuar );
 			Color = tmp;
 		}
 
-		public static string Leer(string texto="")
+		public static string Leer( string texto = "" )
 		{
 			Console.Write( texto );
 			return Console.ReadLine();
@@ -44,7 +48,7 @@ namespace Ejercicios14
 			AlterarColor();
 			Console.WriteLine();
 		}
-	
+
 		public static ConsoleColor Color
 		{
 			get => Console.ForegroundColor;
@@ -64,9 +68,9 @@ namespace Ejercicios14
 
 	partial class Cartera : IEnumerable<Cliente>
 	{
-		List<Cliente> clientes;
 		public static Cartera Central = new Cartera();
 
+		List<Cliente> clientes;
 		private Cartera()
 		{
 			clientes = new List<Cliente>();
@@ -77,9 +81,9 @@ namespace Ejercicios14
 			if( clientes.Contains( cliente ) ) return;
 			clientes.Add( cliente );
 		}
-		public Cliente Buscar(string nombre )
+		public Cliente Buscar( string nombre )
 		{
-			return this.DefaultIfEmpty(Cliente.ConsumidorFinal).FirstOrDefault( c => c.Contiene( nombre ) );
+			return this.DefaultIfEmpty( Cliente.ConsumidorFinal ).FirstOrDefault( c => c.Contiene( nombre ) );
 		}
 		public IEnumerator<Cliente> GetEnumerator() => clientes.GetEnumerator();
 	}
@@ -88,49 +92,60 @@ namespace Ejercicios14
 		private void Generar()
 		{
 			Agregar( new Cliente( "Alejandro", "Av Central" ) );
-			Agregar( new Cliente( "Elidio",    "Av Central" ) );
-			Agregar( new Cliente( "Mirta",     "Av Central" ) );
-			Agregar( new Cliente( "Franco",    "Solano Vera" ) );
-			Agregar( new Cliente( "Maira",     "Solano Vera" ) );
+			Agregar( new Cliente( "Elidio", "Av Central" ) );
+			Agregar( new Cliente( "Mirta", "Av Central" ) );
+			Agregar( new Cliente( "Franco", "Solano Vera" ) );
+			Agregar( new Cliente( "Maira", "Solano Vera" ) );
 		}
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 
-	public class Cliente : IEnumerable<Cliente.Movimiento>
+	public class Cliente
 	{
-		public class Movimiento
+		class Movimiento
 		{
-			public string Descripcion { get; set; }
-			public double Monto { get; set; }
+			public string Descripcion { get; private set; }
+			public double Monto { get; private set; }
+			public Movimiento( string descripcion, double monto )
+			{
+				Descripcion = descripcion;
+				Monto = monto;
+			}
+			public override string ToString() => $"{Descripcion,-30} {Monto,8:C2}";
 		}
 
-		public string Nombre { get; set; }
-		public string Domicilio { get; set; }
+		public string Nombre { get; private set; }
+		public string Domicilio { get; private set; }
 
-		List<Movimiento> Movimientos;
+		List<Movimiento> movimientos;
 		public Cliente( string nombre, string domicilio )
 		{
 			Nombre = nombre;
 			Domicilio = domicilio;
-			Movimientos = new List<Movimiento>();
+			movimientos = new List<Movimiento>();
 		}
+		public static Cliente ConsumidorFinal = new Cliente( "CONSUMIDOR FINAL", "" );
+
 		public void Comprar( string descripcion, double monto )
 		{
 			if( monto <= 0 ) return;
-			Movimientos.Add( new Movimiento() { Descripcion = $"COMPRÓ: {descripcion}", Monto = -monto } );
+
+			movimientos.Add( new Movimiento( $"COMPRÓ: {descripcion}", -monto ) );
 		}
 		public void Pagar( string descripcion, double monto )
 		{
 			if( monto <= 0 ) return;
-			Movimientos.Add( new Movimiento() { Descripcion = $"PAGÓ: {descripcion}", Monto = -monto } );
+			movimientos.Add( new Movimiento( $"PAGÓ: {descripcion}", monto ) );
 		}
-		public double Saldo => Movimientos.Sum( m => m.Monto );
+		public double Saldo => movimientos.Sum( m => m.Monto );
 
 		public bool Contiene( string texto ) => Nombre.Contains( texto ) || Domicilio.Contains( texto );
 
-		public static Cliente ConsumidorFinal = new Cliente( "CONSUMIDOR FINAL", "" );
-		public IEnumerator<Movimiento> GetEnumerator() => Movimientos.GetEnumerator();
-		IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+		public void Listar( Action<string> accion )
+		{
+			foreach( var movimiento in movimientos )
+				accion( movimiento.ToString() );
+		}
 	}
 
 	class Producto
@@ -138,7 +153,6 @@ namespace Ejercicios14
 		public string Codigo { get; set; }
 		public string Descripcion { get; set; }
 		public double Precio { get; set; }
-		public override int GetHashCode() => Codigo.GetHashCode();
 
 		public Producto( string codigo, string descripcion, double precio )
 		{
@@ -147,16 +161,14 @@ namespace Ejercicios14
 			Precio = precio;
 			movimientos = new List<int>();
 		}
-
 		List<int> movimientos;
-
 		public void Agregar( int cantidad )
 		{
 			if( cantidad <= 0 ) return;
 			movimientos.Add( cantidad );
 		}
 
-		public void Sacar( int cantidad )
+		public void Quitar( int cantidad )
 		{
 			if( cantidad <= 0 ) return;
 			movimientos.Add( -cantidad );
@@ -165,14 +177,14 @@ namespace Ejercicios14
 		public bool Contiene( string texto ) => Codigo == texto || Descripcion.Contains( texto );
 
 		public int Existencia => movimientos.Sum();
+		public override int GetHashCode() => Codigo.GetHashCode();
 	}
 
 	partial class Catalogo : IEnumerable<Producto>
 	{
-		List<Producto> productos;
-
 		public static Catalogo Central = new Catalogo();
 
+		List<Producto> productos;
 		private Catalogo()
 		{
 			productos = new List<Producto>();
@@ -183,10 +195,8 @@ namespace Ejercicios14
 			if( productos.Contains( producto ) ) return;
 			productos.Add( producto );
 		}
-		public Producto Buscar( string texto ) => productos.DefaultIfEmpty(null).First( p => p.Contiene(texto));
-
+		public Producto Buscar( string texto ) => productos.DefaultIfEmpty( null ).First( p => p.Contiene( texto ) );
 		public IEnumerator<Producto> GetEnumerator() => productos.GetEnumerator();
-
 	}
 
 	partial class Catalogo
@@ -194,10 +204,10 @@ namespace Ejercicios14
 		private void Generar()
 		{
 			Agregar( new Producto( "001", "Coca Cola", 50 ) );
-			Agregar( new Producto( "002", "Fanta",     30 ) );
-			Agregar( new Producto( "011", "Pepsi",     40 ) );
-			Agregar( new Producto( "012", "Sprite",    45 ) );
-			Agregar( new Producto( "021", "Sonrisas",  10 ) );
+			Agregar( new Producto( "002", "Fanta", 30 ) );
+			Agregar( new Producto( "011", "Pepsi", 40 ) );
+			Agregar( new Producto( "012", "Sprite", 45 ) );
+			Agregar( new Producto( "021", "Sonrisas", 10 ) );
 			Agregar( new Producto( "022", "Merengada", 12 ) );
 
 			foreach( var producto in productos ) {
@@ -208,33 +218,39 @@ namespace Ejercicios14
 	}
 	partial class Factura
 	{
-		static int ProximaFactura = 1;
-		private class Detalle
+		static int PróximaFactura = 1;
+		int numero;
+		class Detalle
 		{
-			public Producto Producto { get; set; }
+			public Producto Producto { get; private set; }
 			public int Cantidad { get; set; }
 			public double Importe => Producto.Precio * Cantidad;
-			public override string ToString() => $"{( Cantidad < 0 ? "ANULAR :" : "" ) + Producto.Descripcion, -20} x {Cantidad, 2} = {Importe, 7:C2}";
+			public Detalle(Producto producto, int cantidad )
+			{
+				Producto = producto;
+				Cantidad = cantidad;
+			}
+			public override string ToString() => $"{( Cantidad < 0 ? "ANULAR: " : "" ) + Producto.Descripcion,-20} x {Cantidad,2} = {Importe,7:C2}";
 		}
 
 		List<Detalle> detalles;
-		public int Numero { get; private set; }
+		public string Numero => $"#A{numero,4:0000}";
 		public DateTime Fecha { get; private set; }
 		public Cliente Cliente { get; set; }
 
 		public Factura()
 		{
-			Numero = ProximaFactura++;
 			Fecha = DateTime.Now;
+			numero = PróximaFactura++;
 			detalles = new List<Detalle>();
 		}
 		public void Agregar( Producto producto, int cantidad )
 		{
-			if( cantidad <= 0 || producto == null) return;
+			if( cantidad <= 0 || producto == null ) return;
 			Registrar( producto, cantidad );
 		}
 
-		public void Sacar( Producto producto, int cantidad )
+		public void Quitar( Producto producto, int cantidad )
 		{
 			if( cantidad <= 0 || producto == null ) return;
 			Registrar( producto, -Min( cantidad, Cantidad( producto ) ) );
@@ -246,9 +262,9 @@ namespace Ejercicios14
 		public void Cerrar()
 		{
 			foreach( var detalle in detalles )
-				detalle.Producto.Sacar( Cantidad( detalle.Producto ) );
-			
-			Cliente?.Comprar( $"Factura #{Numero}", Total );
+				detalle.Producto.Quitar( Cantidad( detalle.Producto ) );
+
+			Cliente?.Comprar( $"Factura {Numero}", Total );
 		}
 
 		public void Listar( Action<string> accion )
@@ -266,7 +282,6 @@ namespace Ejercicios14
 	{
 		private Detalle Ultimo => detalles.Count == 0 ? null : detalles[ detalles.Count - 1 ];
 		private int Cantidad( Producto producto ) => detalles.Where( d => d.Producto == producto ).Sum( d => d.Cantidad );
-		private static int Min( int a, int b ) => a < b ? a : b;
 		private void Registrar( Producto producto, int cantidad )
 		{
 			if( Ultimo?.Producto == producto ) {
@@ -274,9 +289,8 @@ namespace Ejercicios14
 				return;
 			}
 			if( Ultimo?.Cantidad == 0 ) detalles.Remove( Ultimo );
-			detalles.Add( new Detalle() { Producto = producto, Cantidad = cantidad } );
+			detalles.Add( new Detalle( producto, cantidad ) );
 		}
-
 	}
 
 	class Imprimir
@@ -288,8 +302,8 @@ namespace Ejercicios14
 			Consola.Mostrar( $"  Número    : {factura.Numero}" );
 			Consola.Mostrar( $"  Cliente   : {cliente.Nombre}" );
 			Consola.Mostrar( $"  Domicilio : {cliente.Domicilio}" );
-			factura.Listar( linea => Consola.Mostrar( $"  · {linea}" ));
-			Consola.Mostrar( $"                        TOTAL : {factura.Total,7:C2}" );
+			factura.Listar( linea => Consola.Mostrar( $"  · {linea}" ) );
+			Consola.Mostrar( $"                        TOTAL : {factura.Total, 7:C2}" );
 		}
 		public static void Mostrar( Catalogo catalogo )
 		{
@@ -298,43 +312,45 @@ namespace Ejercicios14
 				Consola.Mostrar( $"  Código     : {producto.Codigo}" );
 				Consola.Mostrar( $"  Descripción: {producto.Descripcion}" );
 				Consola.Mostrar( $"  Precio     : {producto.Precio, 7:C2}" );
-				Consola.Mostrar( $"  Existencia : {producto.Existencia, 3}" );
+				Consola.Mostrar( $"  Existencia : {producto.Existencia,3}u" );
 				Consola.Separar();
 			}
 		}
-		public static void Mostrar( Cartera cartera ) {
+		public static void Mostrar( Cartera cartera )
+		{
 			Consola.Titulo( "CARTERA" );
 			foreach( var cliente in cartera ) {
 				Consola.Mostrar( $"  Nombre     : {cliente.Nombre}" );
 				Consola.Mostrar( $"  Domicilio  : {cliente.Domicilio}" );
 				Consola.Mostrar( $"  Saldo      : {cliente.Saldo, 9:C2}" );
-				foreach( var m in cliente ) {
-					Consola.Mostrar( $"  · {m.Descripcion, -20} {m.Monto,7:C2}" );
-				}
+				cliente.Listar( linea => Consola.Mostrar( $"  · {linea}" ) );
 				Consola.Separar();
 			}
 		}
 	}
 	class DemoFactura
 	{
-
 		static void Main( string[] args )
 		{
 			var f1 = new Factura();
-			f1.Cliente = Cartera.Central.Buscar( "Ale" );
-			f1.Agregar( Catalogo.Central.Buscar( "Coca Cola" ), 2 );
-			f1.Agregar( Catalogo.Central.Buscar( "Sonrisa" ), 2 );
-			f1.Agregar( Catalogo.Central.Buscar( "Sonrisa" ), 2 );
-			f1.Sacar( Catalogo.Central.Buscar( "Sonrisa" ), 3 );
+			var catalogo = Catalogo.Central;
+			var cartera = Cartera.Central;
 
-			f1.Agregar( Catalogo.Central.Buscar( "002" ), 2 );
-			f1.Sacar( Catalogo.Central.Buscar( "Coca Cola" ), 1 );
+			f1.Cliente = cartera.Buscar( "Ale" );
+
+			f1.Agregar( catalogo.Buscar( "Coca Cola" ), 2 );
+			f1.Agregar( catalogo.Buscar( "Sonrisa" ), 2 );
+			f1.Agregar( catalogo.Buscar( "Sonrisa" ), 2 );
+			f1.Quitar( catalogo.Buscar( "Sonrisa" ), 3 );
+
+			f1.Agregar( catalogo.Buscar( "002" ), 2 );
+			f1.Quitar( catalogo.Buscar( "Coca Cola" ), 1 );
 
 			f1.Cerrar();
-
+			f1.Cliente.Pagar( "Pago a cuenta", 100 );
 			Imprimir.Mostrar( f1 );
-			Imprimir.Mostrar( Catalogo.Central );
-			Imprimir.Mostrar( Cartera.Central );
+			Imprimir.Mostrar( catalogo );
+			Imprimir.Mostrar( cartera );
 
 			Consola.Pausa();
 		}
