@@ -1,0 +1,5 @@
+API Fornite
+
+TRN-Api-Key: 5cda962e-1ba7-49a7-9c9a-91b9fd793a4a
+GET https://api.fortnitetracker.com/v1/profile/psn/lol-francodibatt
+
