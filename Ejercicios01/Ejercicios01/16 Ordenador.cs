@@ -46,7 +46,6 @@ namespace Ejercicios16
 			return lista;
 		}
 
-
 		static void Main( string[] args )
 		{
 			var datos = new List<Persona> {

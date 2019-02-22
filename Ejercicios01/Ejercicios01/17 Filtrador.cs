@@ -12,6 +12,7 @@ namespace Ejercicios17
 			public string Apellido { get; set; }
 			public int Edad { get; set; }
 			public bool EsHombre { get; set; }
+
 			public override string ToString() => $"{Apellido}, {Nombre} ({Edad} {( EsHombre ? "H" : "M" )})";
 		}
 
@@ -30,7 +31,11 @@ namespace Ejercicios17
 
 		class Hombre : IFiltro
 		{
-			public bool Condicion( Persona p ) => p.EsHombre;
+			public bool Condicion( Persona p )
+			{
+				Console.WriteLine($"En Condicion Hombre : {p}");
+				return p.EsHombre;
+			}
 		}
 
 		class Contiene : IFiltro
@@ -44,7 +49,7 @@ namespace Ejercicios17
 		{
 			private IFiltro Anterior;
 			public Invertir( IFiltro anterior ) => Anterior = anterior;
-			public bool Condicion( Persona p ) => !Anterior.Condicion( p );
+			public bool Condicion( Persona p ) => ! Anterior.Condicion( p );
 		}
 
 		class Y : IFiltro
@@ -72,13 +77,12 @@ namespace Ejercicios17
 		{
 			int Edad;
 			public MenorA( int edad ) => Edad = edad;
-			public bool Condicion( Persona p ) => p.Edad < Edad;
+			public virtual bool Condicion( Persona p ) => p.Edad < Edad;
 		}
 
 		class Menor : MenorA
 		{
 			public Menor() : base( 18 ) { }
-			public bool Condicion( Persona p ) => p.Edad < 18;
 		}
 
 		class Mayor : IFiltro
@@ -87,6 +91,7 @@ namespace Ejercicios17
 			public Mayor() => Base = new Invertir( new Menor() );
 			public bool Condicion( Persona p ) => Base.Condicion( p );
 		}
+
 		static IEnumerable<Persona> Filtrar( this IEnumerable<Persona> personas, IFiltro filtro )
 		{
 			foreach( var persona in personas ) {
@@ -94,18 +99,27 @@ namespace Ejercicios17
 					yield return persona;
 			}
 		}
-		static void Main( string[] args )
+		static IEnumerable<Persona> Filtrar( this IEnumerable<Persona> personas, Condicion condicion)
+		{
+			foreach( var persona in personas ) {
+				if( condicion( persona ) )
+					yield return persona;
+			}
+		}
+
+		delegate bool Condicion( Persona a );
+
+		static Condicion No( Condicion condicion ) => ( p ) => !condicion( p );
+
+		public static string NombreCompleto(this Persona p ) => $"{p.Nombre} {p.Apellido}";
+ 		static void Main( string[] args )
 		{
 			Console.WriteLine( "LISTADO DE PERSONAS" );
-			IFiltro hombre = new Hombre();
-			IFiltro mujer = new Invertir( hombre );
 
-			IFiltro condicion = new O( new Y( hombre, new Menor() ), new Y( mujer, new Mayor() ) );
-
-			//f = new Y( new Menor(), f );
-			foreach( var persona in Filtrar( datos, condicion ) ) {
-				Console.WriteLine( $"· {persona}" );
+			foreach( var persona in datos.Filtrar( No(p => p.Edad < 18 )) ){
+				Console.WriteLine( $" · {persona}" );
 			}
+
 			Console.ReadLine();
 		}
 	}
