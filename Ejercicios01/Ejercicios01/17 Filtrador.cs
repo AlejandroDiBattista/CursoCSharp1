@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Ejercicios17
@@ -33,7 +34,7 @@ namespace Ejercicios17
 		{
 			public bool Condicion( Persona p )
 			{
-				Console.WriteLine($"En Condicion Hombre : {p}");
+				Console.WriteLine( $"En Condicion Hombre : {p}" );
 				return p.EsHombre;
 			}
 		}
@@ -49,7 +50,7 @@ namespace Ejercicios17
 		{
 			private IFiltro Anterior;
 			public Invertir( IFiltro anterior ) => Anterior = anterior;
-			public bool Condicion( Persona p ) => ! Anterior.Condicion( p );
+			public bool Condicion( Persona p ) => !Anterior.Condicion( p );
 		}
 
 		class Y : IFiltro
@@ -99,7 +100,7 @@ namespace Ejercicios17
 					yield return persona;
 			}
 		}
-		static IEnumerable<Persona> Filtrar( this IEnumerable<Persona> personas, Condicion condicion)
+		static IEnumerable<Persona> Filtrar( this IEnumerable<Persona> personas, Condicion condicion )
 		{
 			foreach( var persona in personas ) {
 				if( condicion( persona ) )
@@ -109,14 +110,22 @@ namespace Ejercicios17
 
 		delegate bool Condicion( Persona a );
 
-		static Condicion No( Condicion condicion ) => ( p ) => !condicion( p );
+		static Condicion Not( Condicion condicion ) => p => !condicion( p );
+		static Condicion Or( params Condicion[] lista ) => a => lista.Any( p => p( a ) );
+		static Condicion And( params Condicion[] lista ) => a => lista.All( p => p( a ) );
+		static Condicion EsMenor(int edad=18) => ( p ) => p.Edad < edad;
+		static Condicion EsMayor(int edad=18) => ( p ) => p.Edad >= edad;
+		static Condicion EsHombre( ) => ( p ) => p.EsHombre;
+		static Condicion EsMujer( ) => ( p ) => !p.EsHombre;
+		static Condicion Contienen( string texto ) => ( p ) => p.Apellido.Contains( texto ) || p.Nombre.Contains( texto ) ;
 
-		public static string NombreCompleto(this Persona p ) => $"{p.Nombre} {p.Apellido}";
- 		static void Main( string[] args )
+		public static string NombreCompleto( this Persona p ) => $"{p.Nombre} {p.Apellido}";
+
+		static void Main( string[] args )
 		{
 			Console.WriteLine( "LISTADO DE PERSONAS" );
 
-			foreach( var persona in datos.Filtrar( No(p => p.Edad < 18 )) ){
+			foreach( var persona in datos.Filtrar( Or( And( EsHombre(), EsMenor()), And(EsMujer(),EsMayor())) ) ) {
 				Console.WriteLine( $" · {persona}" );
 			}
 
