@@ -111,24 +111,26 @@ namespace Ejercicios17
 		delegate bool Condicion( Persona a );
 
 		static Condicion Not( Condicion condicion ) => p => !condicion( p );
-		static Condicion Or( params Condicion[] lista ) => a => lista.Any( p => p( a ) );
-		static Condicion And( params Condicion[] lista ) => a => lista.All( p => p( a ) );
-		static Condicion EsMenor(int edad=18) => ( p ) => p.Edad < edad;
-		static Condicion EsMayor(int edad=18) => ( p ) => p.Edad >= edad;
-		static Condicion EsHombre( ) => ( p ) => p.EsHombre;
-		static Condicion EsMujer( ) => ( p ) => !p.EsHombre;
-		static Condicion Contienen( string texto ) => ( p ) => p.Apellido.Contains( texto ) || p.Nombre.Contains( texto ) ;
+		static Condicion Or( params Condicion[] condiciones ) => p => condiciones.Any( c => c( p ) );
+		static Condicion And( params Condicion[] condiciones ) => p => condiciones.All( c => c( p ) );
+		static Condicion EsMenor( int edad ) => p => p.Edad < edad;
+		static Condicion Menores => p => EsMenor( 18 )( p );
+		static Condicion EsMayor( int edad ) => p => p.Edad >= edad;
+		static Condicion Mayores => p => EsMayor( 18 )( p );
 
-		public static string NombreCompleto( this Persona p ) => $"{p.Nombre} {p.Apellido}";
+		static Condicion EsHombre => p => p.EsHombre;
+		static Condicion EsMujer => p => !EsHombre( p );
+		static Condicion Contienen( string texto ) => p => p.Apellido.Contains( texto ) || p.Nombre.Contains( texto );
 
 		static void Main( string[] args )
 		{
 			Console.WriteLine( "LISTADO DE PERSONAS" );
 
-			foreach( var persona in datos.Filtrar( Or( And( EsHombre(), EsMenor()), And(EsMujer(),EsMayor())) ) ) {
+			foreach( var persona in datos.Filtrar( Or( And( EsHombre, EsMenor( 18 )), And( EsMujer, EsMayor( 25 ) ) ) ) )  {
 				Console.WriteLine( $" · {persona}" );
 			}
 
+			Console.WriteLine( typeof( IFiltro ) );
 			Console.ReadLine();
 		}
 	}
