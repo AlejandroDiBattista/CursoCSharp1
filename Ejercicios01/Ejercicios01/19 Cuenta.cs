@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ejercicios
+namespace Ejercicios19
 {
 
 	static class Programa
