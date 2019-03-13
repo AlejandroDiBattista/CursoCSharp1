@@ -19,7 +19,7 @@ namespace DemoAgenda
         IList<Entrada> entradas;
 
         public Contacto() => entradas = new List<Entrada>();
-        public Contacto(string apellido, string nombre,  string telefono=null, string email=null, string domicilio = null) : this()
+        public Contacto( string nombre, string apellido, string telefono=null, string email=null, string domicilio = null) : this()
         {
             Apellido = apellido;
             Nombre   = nombre;

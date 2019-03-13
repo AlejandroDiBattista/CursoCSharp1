@@ -10,14 +10,17 @@ namespace DemoAgenda
         static void Main(string[] args)
         {
             var agenda = new Agenda();
-            agenda.Agregar(new Contacto("Di Battista", "Alejandro", email: "alejandrodibattista@gmail.com", telefono: "3815343458"));
-            agenda.Agregar(new Contacto("Di Battista", "Franco",    email: "franquitodibattista@gmail.com", telefono: "3815216946"));
+            agenda.Agregar(new Contacto(apellido: "Di Battista", nombre: "Alejandro",  email: "alejandrodibattista@gmail.com", telefono: "3815343458" ));
+            agenda.Agregar(new Contacto(nombre: "Franco", apellido: "Di Battista",    telefono: "3815216946", email: "franquitodibattista@gmail.com"));
 
             Almacen alma; 
             Console.WriteLine("DEMO EN MEMORIA");
             Console.WriteLine(" - Serializando...");
             var escribir = new StringWriter();
             alma = new Almacen(null, escribir);
+
+            alma.Lector = new StringReader("a");
+
             alma.Escribir(agenda);
 
             var json = escribir.ToString();
