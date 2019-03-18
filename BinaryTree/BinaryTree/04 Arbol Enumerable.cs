@@ -23,7 +23,7 @@ namespace ArbolBinarioEnumerable
         }
         public void Recorrer(int nivel) {
             izquierda?.Recorrer(nivel+1);
-            if (dato != null) Console.WriteLine($" { new String(' ', nivel+2) }- {dato}");
+            if (dato != null) Console.WriteLine($" { new String(' ', nivel*3) }- {dato}");
             derecha?.Recorrer(nivel +1);
         }
         public void Recorrer()

@@ -1,0 +1,25 @@
+Dos:
+   1. Segundo numero
+   2. El sucesor del sucesor de
+      cero
+
+Quince:
+   1. El quinceavo numero natural
+   2. El sucesor del sucesor del
+      sucesor del sucesor del
+      sucesor del sucesor del
+      sucesor del sucesor del
+      sucesor del sucesor del
+      sucesor del sucesor del
+      sucesor del sucesor del
+      sucesor de cero
+
+Tres:
+   1. Tercer numero
+   2. El sucesor del sucesor del
+      sucesor de cero
+
+Uno:
+   1. Primer numero
+   2. El sucesor de cero
+
