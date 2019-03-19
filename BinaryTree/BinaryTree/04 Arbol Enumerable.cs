@@ -48,7 +48,7 @@ namespace ArbolBinarioEnumerable
                     Console.WriteLine($" - {a.dato}");
                     a = a.derecha;
                 }
-            } ;
+            } 
         }
 
         public IEnumerator<int> GetEnumerator()
