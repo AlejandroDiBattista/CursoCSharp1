@@ -15,20 +15,27 @@ namespace ExpresionesRegulares
             2. Que es muy peresozo
             3. Que es muy desdichado
         ";
-        const string HTML = @"antes cualquier cosa <div>Hola Mundo!</div> despues cualquier cosa";
-        const string Tag  = @"(?<x><(?<a>\w+)>(?<body>.*?)(!?)</\k<a>>)";
+        const string HTML = @"antes cualquier cosa <h2>Hola Mundo Cruel</h2> despues cualquier cosa <div>y esto</div> como se come";
+        const string Tag  = @"<(?<etiqueta>\w+)>  
+                                (?<body> (\w+(\s*))+) 
+                              </\k<etiqueta>>";
 
         static void Main(string[] args)
         {
             Console.WriteLine("DEMO Expresiones Regulares");
-            Regex r = new Regex(Tag, RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+            Console.WriteLine($" HTML: {HTML}");
+            Console.WriteLine($" TAG : {Tag}");
+            Regex r = new Regex(Tag, RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
             foreach(Match match in r.Matches(HTML))
             {
-                var i = 0;
                 Console.WriteLine(match.Groups["body"]);
                 foreach (Group g in match.Groups)
                 {
-                    Console.WriteLine($"{i++}) Valor: [{g.Value}] en {g.Index}, Name: [{g.Name}]");
+                    Console.WriteLine($"Grupo: [{g.Value}] en {g.Index}, Name: [{g.Name}]");
+                    foreach (Capture a in g.Captures)
+                    {
+                        Console.WriteLine($"   Captura: [{a.Value}] en {a.Index}");
+                    }
                 };
             }
             
