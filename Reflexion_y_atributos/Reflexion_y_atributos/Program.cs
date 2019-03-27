@@ -45,6 +45,10 @@
         {
             AnimalTypeTestClass testClass = new AnimalTypeTestClass();
             Type type = testClass.GetType();
+
+            MethodInfo m = type.GetMethod("DogMethod");
+            m.Invoke(testClass, null);
+
             foreach (MethodInfo mInfo in type.GetMethods())
             {
                 foreach (Attribute attr in Attribute.GetCustomAttributes(mInfo))
