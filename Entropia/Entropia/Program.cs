@@ -20,7 +20,7 @@ namespace Entropia
                 }
             }
             public double Total => contar.Values.Sum();
-            public int Cantidad => contar.Values.Count;
+            public int Cantidad => contar.Keys.Count;
             public double Entropia => contar.Values.Select(f => f / Total).Sum(p => -p * Math.Log(p, 2));
         }
 
