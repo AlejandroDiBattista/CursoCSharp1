@@ -20,5 +20,5 @@ contador.contar texto
 puts "DEMO Entropía"
 puts " · Hay #{contador.size} símbolos con una entropía de #{contador.entropia}"
 
-#t = contador.total
-#pp contador.sort_by{|k,v|-v}.map{|k,v|[k,(100.0*v/t).round(2)]}
+t = contador.total
+pp contador.sort_by{|k,v|-v}.map{|k,v|[k,(100.0*v/t).round(2)]}
