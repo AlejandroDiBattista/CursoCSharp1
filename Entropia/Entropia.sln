@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28711.60
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entropia", "Entropia\Entropia.csproj", "{A89B0A47-A2DD-428B-AA3E-6DD485D8F142}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A89B0A47-A2DD-428B-AA3E-6DD485D8F142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A89B0A47-A2DD-428B-AA3E-6DD485D8F142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A89B0A47-A2DD-428B-AA3E-6DD485D8F142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A89B0A47-A2DD-428B-AA3E-6DD485D8F142}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0FFCF596-D0D0-42A8-9046-7AD9AF5D79D1}
+	EndGlobalSection
+EndGlobal
