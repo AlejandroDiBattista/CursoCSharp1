@@ -1,0 +1,116 @@
+{
+  "productos": [
+    {
+      "existencias": [
+        {
+          "Valor": 10,
+          "Hora": 1
+        },
+        {
+          "Valor": 20,
+          "Hora": 10
+        },
+        {
+          "Valor": 20,
+          "Hora": 11
+        },
+        {
+          "Valor": 10,
+          "Hora": 12
+        },
+        {
+          "Valor": 20,
+          "Hora": 15
+        },
+        {
+          "Valor": 20,
+          "Hora": 16
+        },
+        {
+          "Valor": 20,
+          "Hora": 37
+        }
+      ],
+      "precios": [
+        {
+          "Valor": 50.0,
+          "Hora": 2
+        },
+        {
+          "Valor": 49.99,
+          "Hora": 13
+        },
+        {
+          "Valor": 19.95,
+          "Hora": 14
+        }
+      ],
+      "Descripcion": "Coca"
+    },
+    {
+      "existencias": [
+        {
+          "Valor": 20,
+          "Hora": 3
+        },
+        {
+          "Valor": 50,
+          "Hora": 29
+        }
+      ],
+      "precios": [
+        {
+          "Valor": 40.0,
+          "Hora": 4
+        },
+        {
+          "Valor": 17.25,
+          "Hora": 32
+        }
+      ],
+      "Descripcion": "Pepsi"
+    },
+    {
+      "existencias": [
+        {
+          "Valor": 30,
+          "Hora": 5
+        },
+        {
+          "Valor": 100,
+          "Hora": 21
+        }
+      ],
+      "precios": [
+        {
+          "Valor": 30.0,
+          "Hora": 6
+        },
+        {
+          "Valor": 19.99,
+          "Hora": 9
+        }
+      ],
+      "Descripcion": "Fanta"
+    },
+    {
+      "existencias": [
+        {
+          "Valor": 40,
+          "Hora": 7
+        },
+        {
+          "Valor": 50,
+          "Hora": 25
+        }
+      ],
+      "precios": [
+        {
+          "Valor": 20.0,
+          "Hora": 8
+        }
+      ],
+      "Descripcion": "Crush"
+    }
+  ]
+}

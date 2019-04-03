@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28711.60
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esperador.Android", "Esperador\Esperador.Android\Esperador.Android.csproj", "{CC82B034-3353-4381-A751-BA90ECC99440}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esperador", "Esperador\Esperador\Esperador.csproj", "{C2E026A6-9F02-4D3B-82BD-0D4A30757287}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC82B034-3353-4381-A751-BA90ECC99440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC82B034-3353-4381-A751-BA90ECC99440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC82B034-3353-4381-A751-BA90ECC99440}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CC82B034-3353-4381-A751-BA90ECC99440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC82B034-3353-4381-A751-BA90ECC99440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC82B034-3353-4381-A751-BA90ECC99440}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C2E026A6-9F02-4D3B-82BD-0D4A30757287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2E026A6-9F02-4D3B-82BD-0D4A30757287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2E026A6-9F02-4D3B-82BD-0D4A30757287}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C2E026A6-9F02-4D3B-82BD-0D4A30757287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2E026A6-9F02-4D3B-82BD-0D4A30757287}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2E026A6-9F02-4D3B-82BD-0D4A30757287}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C9950573-E908-41BD-AD39-131FF13213C1}
+	EndGlobalSection
+EndGlobal
