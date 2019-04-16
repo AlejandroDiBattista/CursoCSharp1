@@ -13,17 +13,21 @@ namespace InjeccionDependencia
 
    class Class1
    {
+
       static void Main(string[] args)
       {
          var a = new Contador<int>();
          var b = new Contador<double>();
 
+         
          Console.WriteLine(a.Siguiente);
          Console.WriteLine(a.Siguiente);
          Console.WriteLine(a.Siguiente);
          Console.WriteLine(a.Siguiente);
 
          Console.WriteLine(b.Siguiente);
+         Console.WriteLine(b.Siguiente);
+
          Console.ReadLine();
       }
    }
