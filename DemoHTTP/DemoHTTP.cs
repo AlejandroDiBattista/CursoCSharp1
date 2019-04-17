@@ -3,60 +3,80 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.IO;
+using System.Text.RegularExpressions;
+using HtmlAgilityPack;
+using System.Collections.Generic;
 
 namespace Demo
 {
    class DemoHTTP
    {
+      public static IEnumerable<string> Bajar(string palabra)
+      {
+         var url = $"http://www.wordreference.com/definicion/{palabra}";
+
+         HtmlWeb web = new HtmlWeb();
+         var htmlDoc = web.Load(url);
+         var nodes = htmlDoc.DocumentNode.SelectNodes(@"//ol/li");
+
+         foreach (var node in nodes)
+            yield return node.InnerHtml;
+      }
+
+      static void Mostrar(string[] textos)
+      {
+         foreach (var item in textos)
+         {
+            switch (item)
+            {
+               case @"<br>":
+                  Console.WriteLine();
+                  break;
+               case @"<span class=""i"">": Console.ForegroundColor = ConsoleColor.DarkGreen;
+                  break;
+               case @"<span class=""b"">":
+                  Console.ForegroundColor = ConsoleColor.White;
+                  break;
+               case @"</span>":
+                  Console.ForegroundColor = ConsoleColor.DarkGray;
+                  break;
+               default:
+                  Console.Write(item);
+                  break;
+            }
+         }
+         Console.WriteLine();
+         Console.WriteLine();
+      }
       static void Main()
       {
-         Console.SetWindowSize(100, 30);
-         Console.WriteLine("DEMO HTTP");
-         Task t = new Task(DownloadPageAsync);
-         t.Start();
-         Console.WriteLine("Downloading page...");
+         Console.SetWindowSize(120, 30);
+         Console.Title = "DEMO HTTPClient";
+         var r = new Regex("(<[^<>]*>)", RegexOptions.IgnoreCase);
+         var i = 1;
+         foreach (var item in Bajar("gato"))
+         {
+            Console.Write($"{i++}. ");
+            Mostrar(r.Split(item));
+         }
+
          Console.ReadLine();
       }
 
-      static async void DownloadPageAsync()
+      static async Task<string> BajarPagina(string palabra)
       {
-         string page = "http://www.wordreference.com/definicion/perro";
+         string url = $"http://www.wordreference.com/definicion/{palabra}";
+
          var handler = new HttpClientHandler();
          if (handler.SupportsAutomaticDecompression)
-         {
-            handler.AutomaticDecompression =   DecompressionMethods.GZip | DecompressionMethods.Deflate;
-         }
-         HttpClient client = new HttpClient(handler);
-         //client.DefaultRequestHeaders.Add("Nombre", "Alejandro");
+            handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+         var client = new HttpClient(handler);
          client.DefaultRequestHeaders.Add("User-Agent", @"C# App");
-         Console.WriteLine(client.DefaultRequestHeaders);
-         Console.ReadLine();
-         HttpResponseMessage response = await client.GetAsync(page);
-         HttpContent content = response.Content;
 
-         Console.WriteLine();
-         Console.WriteLine("-[HEAD]--------------");
-         foreach (var h in response.Headers)
-         {
-            var texto = String.Join(" | ", h.Value).PadRight(100);
-            if (texto.Length > 100)
-            {
-               texto = texto.Substring(0, 97) + "...";
-            }
-            Console.WriteLine($" {h.Key,-25}: {texto}");
-
-         }
-         Console.WriteLine();
-         Console.WriteLine("-[BODY]--------------");
-         string result = await content.ReadAsStringAsync();
-
-         if(result.Contains("perro"))
-         {
-            Console.WriteLine("SOMOS UNOS GENIOS (ponele)");
-            Console.ReadLine();
-         }
-         if (result != null && result.Length >= 50)
-            Console.WriteLine(result + "...");
+         var response = await client.GetAsync(url);
+         return await response.Content.ReadAsStringAsync();
       }
    }
 }

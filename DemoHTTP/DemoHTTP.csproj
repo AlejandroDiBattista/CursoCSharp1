@@ -6,4 +6,9 @@
     <StartupObject>Demo.DemoHTTP</StartupObject>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Colorful.Console" Version="1.2.9" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.2" />
+  </ItemGroup>
+
 </Project>

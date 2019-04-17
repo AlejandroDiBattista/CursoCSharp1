@@ -9,6 +9,7 @@ namespace Expresiones
       public abstract string NPI();
       public virtual void Mostrar(int nivel = 0) => Separar(nivel);
       public void Separar(int nivel = 0) => Console.Write(new String(' ', 1 + nivel * 2));
+
       static public implicit operator Expresion(int valor) => new Constante(valor);
       public static Expresion operator +(Expresion izquierda, Expresion derecha) => new Suma(izquierda, derecha);
       public static Expresion operator +(string nombre, Expresion derecha) => new Suma(new Variable(nombre), derecha);
@@ -162,7 +163,6 @@ namespace Expresiones
 
    static class Program
    {
-
 
       static void Main(string[] args)
       {
