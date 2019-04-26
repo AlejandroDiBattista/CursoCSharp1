@@ -81,35 +81,56 @@ namespace Arquitecturas
         protected override string GenerarSQL => $"DELETE {Tabla} WHERE id = {valores["id"]}";
     }
 
+    static class Storage
+    {
+        static void Guardar(object entidad)
+        {
+            IComando cmd;
+            if (ID == null)
+                cmd = Demo.container.GetInstance<IAgregarComando>();
+            else
+                cmd = Demo.container.GetInstance<IActualizarComando>();
+
+            entidad.ID = entidad.ID ?? Guid.NewGuid();
+
+            cmd.Tabla = nameof(Producto);
+
+            cmd.Agregar("id", ID);
+            cmd.Agregar("descripcion", Descripcion);
+            cmd.Agregar("precio", Precio);
+
+            cmd.Ejecutar();
+
+        }
+    }
+
     class Producto
     {
-        static int Ultimo = 0;
-
-        public Guid ID { get; private set; }
+        public Guid? ID { get; private set; }
         public string Descripcion { get; set; }
         public double Precio { get; set; }
 
-        public Producto(Guid id, string descripcion, double precio)
+        public Producto(Guid? id, string descripcion, double precio)
         {
             ID = id;
             Descripcion = descripcion;
             Precio = precio;
         }
 
+        void PonerOferta() => Precio *= 0.9;
+
         public void Guardar()
         {
             IComando cmd;
-            if(ID == Guid.Empty)
-            {
-                ID  = Guid.NewGuid();
+            if(ID == null)
                 cmd = Demo.container.GetInstance<IAgregarComando>();
-            }
             else
-            {
                 cmd = Demo.container.GetInstance<IActualizarComando>();
-            }
+
+            ID = ID ?? Guid.NewGuid();
 
             cmd.Tabla = nameof(Producto);
+
             cmd.Agregar("id", ID);
             cmd.Agregar("descripcion", Descripcion);
             cmd.Agregar("precio", Precio);
@@ -147,7 +168,8 @@ namespace Arquitecturas
             var p = new Producto(Guid.Empty, "Coca Cola", 100);
 
             Console.WriteLine("\n · Guardar (1º vez)..."); 
-            p.Guardar();
+            Storage.Guardar(p);
+
             Console.ReadLine();
 
             Console.WriteLine("\n · Guardar (2º vez)...");

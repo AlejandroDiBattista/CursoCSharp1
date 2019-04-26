@@ -38,17 +38,21 @@ namespace DemoEntidad
         public void Agregar(Producto producto){
             producto.ID = Guid.NewGuid();
             var campos  = String.Join(",", producto.GetType().GetProperties().Select(p => p.Name));
-            var valores = String.Join(",", producto.GetType().GetProperties().Select(p => p.ToString() ));
+            var valores = String.Join(",", producto.GetType().GetProperties().Select(p => p.GetValue(producto) )); 
 
-            var sql = $"INSERT INTO {nameof(Productos)} ({campos}) SET ({valores})";
+            //var campos  = "Id, Descripcion, Precio";
+            //var valores = $"'{producto.ID}', '{producto.Descripcion}', {producto.Precio}";
+
+            var sql = $"INSERT INTO {nameof(Productos)} ({campos}) VALUES ({valores})";
             Coneccion.Ejecutar(sql);
         }
 
         public void Actualizar(Producto producto) {
-            var campos  = producto.GetType().GetProperties().Where(p=> p.Name != "ID").Select(p => p.Name);
-            var valores = producto.GetType().GetProperties().Where(p => p.Name != "ID").Select(p => p.ToString());
-            var pares   =  String.Join(",", campos.Zip(valores, (c, v) => $"{c} = {v}"));
+            var campos  = producto.GetType().GetProperties().Where(p=> p.Name  != "ID").Select(p => p.Name);
+            var valores = producto.GetType().GetProperties().Where(p => p.Name != "ID").Select(p => p.GetValue(producto));
+            var pares   = String.Join(",", campos.Zip(valores, (c, v) => $"{c} = {v}"));
 
+            //var pares = $"Descripcion = '{producto.Descripcion}', Precio = {producto.Precio}";
             var sql = $"UPDATE {nameof(Productos)} SET {pares} WHERE ID = '{producto.ID}";
             Coneccion.Ejecutar(sql);
         }
@@ -58,17 +62,18 @@ namespace DemoEntidad
             Coneccion.Ejecutar(sql);
         }
 
-        public IEnumerable<Producto>Traer(string SQL) {
-            var lista = Coneccion.Consultar($"SELECT * FROM {nameof(Productos)}");
+        public Producto Traer(Guid id) => Traer($"ID = '{id}").FirstOrDefault();
 
-            foreach(var item in lista) {
-                var tmp = new Producto();
-                foreach(var campo in tmp.GetType().GetProperties())
-                    campo.SetValue(tmp, campo.GetValue(item) );
-                yield return tmp;
+        public IEnumerable<Producto>Traer(string where) {
+            var datos = Coneccion.Consultar($"SELECT * FROM {nameof(Productos)} WHERE {where}");
+
+            foreach(var dato in datos) {
+                var producto = Crear();
+                foreach(var campo in producto.GetType().GetProperties())
+                    campo.SetValue(producto, campo.GetValue(dato) );
+                yield return producto;
             }
         }
-
     }
     class Program {
         static void Pausa() {
@@ -98,7 +103,7 @@ namespace DemoEntidad
             productos.Borrar(a);
             Pausa();
 
-            var ps = productos.Traer("SELECT * FROM Productos");
+            var ps = productos.Traer("Precio < 90");
         }
     }
 }

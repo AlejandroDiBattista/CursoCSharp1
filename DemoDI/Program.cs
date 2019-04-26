@@ -1,13 +1,12 @@
 ﻿using System;
 using SimpleInjector;
 
-
 namespace DemoDI
 {
     public interface IUno { void Mostrar(); }
     public interface IDos : IUno{ }
 
-    public class Uno : IUno{
+    public class Uno : IUno {
         public void Mostrar() => Console.WriteLine(" · UNO");
     }
 
@@ -53,6 +52,18 @@ namespace DemoDI
         }
     }
 
+    public class Duplicar : IDos
+    {
+        public IDos Original;
+        public Duplicar(IDos original) => Original = original;
+
+        public void Mostrar()
+        {
+            Console.Write(" 1."); Original.Mostrar();
+            Console.Write(" 2."); Original.Mostrar();
+        }
+    }
+
     class Program {
         static void Main(string[] args) {
             Console.WriteLine("DEMO DI » Composicion\n");
@@ -60,15 +71,28 @@ namespace DemoDI
             var c = new Container();
             c.Register<Doble>();
 
-            c.Register<IUno, Uno>(Lifestyle.Singleton);
+            c.Register<IUno, Uno>();
             c.Register<IDos, Dos>();
 
             c.RegisterDecorator<IUno, Despues>();
             c.RegisterDecorator<IUno, Antes>();
 
+            c.RegisterDecorator<IDos, Duplicar>();
+
+            c.Verify();
+
+            Console.WriteLine(">>> Con ID");
+
             var d = c.GetInstance<Doble>();
             d.Mostrar();
 
+            var n1 = new Uno();
+            var ds = new Despues(n1);
+            var an = new Antes(ds);
+            var n2 = new Dos(an);
+            var e = new Doble(an, n2);
+            Console.WriteLine("\n\n>>> A mano");
+            e.Mostrar();
             Console.Write("\nPulsa ENTER para terminar..."); Console.ReadLine();
         }
     }
