@@ -8,12 +8,12 @@ namespace DemoDI
     public interface IDos : IUno{ }
 
     public class Uno : IUno{
-        public void Mostrar() => Console.WriteLine(" ·· UNO");
+        public void Mostrar() => Console.WriteLine(" · UNO");
     }
 
     public class Dos : IDos {
         public Dos(IUno uno) { }
-        public void Mostrar() => Console.WriteLine(" ·· DOS");
+        public void Mostrar() => Console.WriteLine(" · DOS");
     }
 
     public class Doble {
@@ -26,10 +26,10 @@ namespace DemoDI
         }
 
         public void Mostrar() {
-            Console.WriteLine(" INICIO");
+            Console.WriteLine(" ► Inicio");
             Uno.Mostrar();
             Dos.Mostrar();
-            Console.WriteLine(" FIN");
+            Console.WriteLine(" ■ Fin");
         }
     }
 
@@ -38,7 +38,7 @@ namespace DemoDI
         public Antes(IUno original) => Original = original;
 
         public void Mostrar() {
-            Console.WriteLine(" · ANTES");
+            Console.WriteLine(" ↓ antes");
             Original.Mostrar();
         }
     }
@@ -49,18 +49,18 @@ namespace DemoDI
 
         public void Mostrar() {
             Original.Mostrar();
-            Console.WriteLine(" · DESPUES");
+            Console.WriteLine(" ↑ despues ");
         }
     }
 
     class Program {
         static void Main(string[] args) {
-            Console.WriteLine("DEMO DI » Composicion");
+            Console.WriteLine("DEMO DI » Composicion\n");
 
             var c = new Container();
             c.Register<Doble>();
 
-            c.Register<IUno, Uno>();
+            c.Register<IUno, Uno>(Lifestyle.Singleton);
             c.Register<IDos, Dos>();
 
             c.RegisterDecorator<IUno, Despues>();
@@ -69,7 +69,7 @@ namespace DemoDI
             var d = c.GetInstance<Doble>();
             d.Mostrar();
 
-            Console.Write("Pulsa ENTER para terminar..."); Console.ReadLine();
+            Console.Write("\nPulsa ENTER para terminar..."); Console.ReadLine();
         }
     }
 }
