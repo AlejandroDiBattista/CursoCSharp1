@@ -167,15 +167,16 @@ namespace Expresiones
       static void Main(string[] args)
       {
          Console.WriteLine("DEMO Expresion!");
-         var x = new Variable("x", 10);
-         Expresion e = 1 + 2 * x;
+         var x = new Variable("x", 100);
+         Expresion e = x + 5 * 20;
          Console.WriteLine();
          Console.WriteLine($"Evaluar | {e} => {e.Evaluar()}");
          Console.WriteLine();
          Console.WriteLine(e.NPI());
          Console.WriteLine();
          e.Mostrar();
-
+            Console.ReadLine();
+            return;
          Console.WriteLine();
          Expresion contador = new Asignar(x, x + 1);
          Console.WriteLine("> CONTADOR");

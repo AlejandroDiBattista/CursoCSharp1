@@ -26,9 +26,9 @@ namespace Demo
 
       static void Mostrar(string[] textos)
       {
-         foreach (var item in textos)
+         foreach (var partes in textos)
          {
-            switch (item)
+            switch (partes)
             {
                case @"<br>":
                   Console.WriteLine();
@@ -42,7 +42,7 @@ namespace Demo
                   Console.ForegroundColor = ConsoleColor.DarkGray;
                   break;
                default:
-                  Console.Write(item);
+                  Console.Write(partes);
                   break;
             }
          }
@@ -53,7 +53,7 @@ namespace Demo
       {
          Console.SetWindowSize(120, 30);
          Console.Title = "DEMO HTTPClient";
-         var r = new Regex("(<[^<>]*>)", RegexOptions.IgnoreCase);
+         var r = new Regex(@"(<[^<>]*>)", RegexOptions.IgnoreCase);
          var i = 1;
          foreach (var item in Bajar("gato"))
          {

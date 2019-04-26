@@ -29,7 +29,7 @@ namespace Demo
       {
          Console.Write("Soy un animal y ...");
          if (a is Perro p) Ejecutar(p);
-         if (a is Gato g) Ejecutar(g);
+         if (a is Gato  g) Ejecutar(g);
       }
 
       static void Ejecutar(Perro p)
@@ -46,15 +46,14 @@ namespace Demo
 
       static void Main(string[] args)
       {
-         dynamic a = new Gato();
+         var a = new Perro();
          
          //Mostrar(a);
-         Ejecutar(a);
+         Ejecutar((dynamic)a);
 
          //a = new Perro();
          //Ejecutar(a);
 
-         a = "Hola Mundo!";
          Ejecutar(a);
          Console.ReadLine();
       }
