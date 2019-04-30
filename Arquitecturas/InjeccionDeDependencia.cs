@@ -86,19 +86,9 @@ namespace Arquitecturas
         static void Guardar(object entidad)
         {
             IComando cmd;
-            if (ID == null)
-                cmd = Demo.container.GetInstance<IAgregarComando>();
-            else
-                cmd = Demo.container.GetInstance<IActualizarComando>();
+           
 
-            entidad.ID = entidad.ID ?? Guid.NewGuid();
-
-            cmd.Tabla = nameof(Producto);
-
-            cmd.Agregar("id", ID);
-            cmd.Agregar("descripcion", Descripcion);
-            cmd.Agregar("precio", Precio);
-
+ 
             cmd.Ejecutar();
 
         }
