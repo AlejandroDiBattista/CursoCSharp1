@@ -8,7 +8,7 @@ namespace MiniEF
 
     class Producto
     {
-        public Guid Id;
+        public Guid Id { get; set; }
         public string Descripcion { get; set; }
         public double Precio { get; set; }
 
@@ -42,7 +42,7 @@ namespace MiniEF
         }
 
         public void Borrar(T dato) {  
-          var pares = Valores(dato);
+            var pares = Valores(dato);
             Comandos.Add($"DELETE {Tabla} WHERE Id = {pares["Id"]}");
         }
 
@@ -56,9 +56,8 @@ namespace MiniEF
                 var valor = propiedad.GetValue(dato);
 
                 if(valor is Guid || valor is string) valor = $"'{valor}'";
-                if (valor is Boolean) valor = ((bool)valor) ? "1" : "0";
+                if(valor is Boolean) valor = ((bool)valor) ? "1" : "0";
 
-                var name = propiedad.Name;
                 salida[propiedad.Name] = valor.ToString();
             }
             return salida;
@@ -67,6 +66,15 @@ namespace MiniEF
 
     class Contexto
     {
+        public Contexto()
+        {
+            foreach (var conjunto in Conjuntos)
+            {
+                var tmp = Activator.CreateInstance(conjunto.PropertyType);
+                conjunto.SetValue(this, tmp);
+            }
+        }
+
         public void Guardar() {
             foreach (var conjunto in Conjuntos)
             {
@@ -75,22 +83,14 @@ namespace MiniEF
             }
         }
 
-        protected IEnumerable<PropertyInfo> Conjuntos => GetType().GetProperties().Where(p => p.PropertyType.GetGenericTypeDefinition() == typeof(Conjunto<>));
+        protected IEnumerable<PropertyInfo> Conjuntos => GetType().GetProperties()
+            .Where(p => p.PropertyType.GetGenericTypeDefinition() == typeof(Conjunto<>));
     }
 
     class Mini : Contexto
     {
-        public Conjunto<Producto> Productos { get; set; }
+        public Conjunto<Producto> Productos  { get; set; }
         public Conjunto<Producto> Productos2 { get; set; }
-
-        public Mini()
-        {
-            foreach(var conjunto in Conjuntos)
-            {
-                var tmp = Activator.CreateInstance(conjunto.PropertyType);
-                conjunto.SetValue(this, tmp);
-            }
-        }
     }
 
     class Program
@@ -100,10 +100,10 @@ namespace MiniEF
             Console.WriteLine("DEMO");
 
             var m = new Mini();
-
-            m.Productos.Agregar(new Producto("CocaZ", 80));
+            var a = new Producto("CocaZ", 80);
+            m.Productos.Agregar(a);
             m.Productos.Agregar(new Producto("Pepsi", 60));
-
+            m.Productos.Borrar(a);
             m.Guardar();
 
             Console.ReadLine();
