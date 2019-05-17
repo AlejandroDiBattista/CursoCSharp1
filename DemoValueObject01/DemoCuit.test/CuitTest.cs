@@ -47,7 +47,6 @@ namespace DemoCuit.test
             Assert.Throws<ArgumentException>(() => new Cuit(20, 18627585, 0));
         }
 
-
         [Fact]
         public void Parse_DeberiaAceptarDigitosPuros()
         {
@@ -106,11 +105,11 @@ namespace DemoCuit.test
             Assert.Equal(a, b);
         }
 
+        [Fact]
         public void Equal_RechazarNulo()
         {
             var a = new Cuit(27, 5001941, 7);
-            Assert.False(a.Equals(null));
+            Assert.Throws<NullReferenceException>(() => a.Equals(null));
         }
-
     }
 }

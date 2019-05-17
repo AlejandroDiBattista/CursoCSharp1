@@ -14,7 +14,9 @@ namespace Modelo.ValueObject
 
         public Cuit(int tipo, int numero, int control)
         {
-            if (tipo != 20 && tipo != 23 && tipo != 24 && tipo != 27)
+            if (tipo != 20 && tipo != 23 && 
+                tipo != 24 && tipo != 27 && 
+                tipo != 30 && tipo != 33 && tipo != 34)
                 throw new ArgumentOutOfRangeException("El tipo es incorrecto");
             if (numero < 1 || numero > 99_000_000)
                 throw new ArgumentOutOfRangeException("El Numero es incorrecto");
@@ -23,8 +25,8 @@ namespace Modelo.ValueObject
             if (CalcularDigito(tipo * 100_000_000L + numero) != control)
                 throw new ArgumentException("El digito verificador es invalido");
 
-            Tipo = tipo;
-            Numero = numero;
+            Tipo    = tipo;
+            Numero  = numero;
             Control = control;
         }
 
@@ -54,8 +56,8 @@ namespace Modelo.ValueObject
                 if (!Regex.IsMatch(cuit, @"\d{11}"))
                     throw new ArgumentException("Debe ser 11 digitos");
             }
-            int tipo = int.Parse(cuit.Substring(0, 2));
-            int numero = int.Parse(cuit.Substring(2, cuit.Length-3));
+            int tipo    = int.Parse(cuit.Substring(0, 2));
+            int numero  = int.Parse(cuit.Substring(2, cuit.Length - 3));
             int control = int.Parse(cuit.Substring(cuit.Length - 1, 1));
 
             return new Cuit(tipo, numero, control);
@@ -75,7 +77,15 @@ namespace Modelo.ValueObject
             return true;
         }
 
-        public bool Equals(Cuit otro) => ToString() == otro.ToString();
+        public bool Equals(Cuit otro)
+        {
+            if (otro == null)
+                throw new NullReferenceException();
+            return this.Tipo    == otro.Tipo   &&
+                   this.Numero  == otro.Numero && 
+                   this.Control == otro.Control;
+        }
+
         public override bool Equals(object obj) => obj is Cuit otro ? Equals(otro) : false;
     }
 }
