@@ -22,6 +22,7 @@ namespace Modelo.ValueObject
                 throw new ArgumentOutOfRangeException("El Numero es incorrecto");
             if (control < 0 || control > 9)
                 throw new ArgumentOutOfRangeException("El control debe ser un digito");
+
             if (CalcularDigito(tipo * 100_000_000L + numero) != control)
                 throw new ArgumentException("El digito verificador es invalido");
 
@@ -31,6 +32,20 @@ namespace Modelo.ValueObject
         }
 
         public override string ToString() => $"{Tipo}-{Numero:D8}-{Control}";
+
+        private static bool CuitValido(string cuit)
+        {
+            if (cuit.Length != 11) return false;
+
+            var factores = new[] { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
+            var digitos  = cuit.Select(d => int.Parse(d.ToString()));
+
+            int suma   = factores.Zip(digitos, (f, d) => f * d).Sum();
+            int resto  = suma % 11;
+            int digito = resto == 0 ? 0 : resto == 1 ? 9 : 11 - resto;
+
+            return digitos.Last() == digito;
+        }
 
         private static int CalcularDigito(long cuit)
         {
