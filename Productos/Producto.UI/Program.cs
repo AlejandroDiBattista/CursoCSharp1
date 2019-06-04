@@ -6,7 +6,11 @@ namespace Producto.UI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            double a = 123.45000;
+            bool b = ((a*100) - Math.Truncate(a * 100)) == 0;
+            Console.WriteLine($"{a} > {a % 1.0} >> {a % 0.1} >>> {a % 0.01}" );
+            Console.WriteLine($"{b}");
+            Console.ReadLine();
         }
     }
 }
