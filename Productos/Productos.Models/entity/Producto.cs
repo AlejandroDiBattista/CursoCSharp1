@@ -28,5 +28,7 @@ namespace Productos.Models
         public override bool Equals(object obj) => obj is Producto otro ? Equals(otro) : false;
         public static bool operator ==(Producto a, Producto b) =>  a.Equals(b);
         public static bool operator !=(Producto a, Producto b) => !a.Equals(b);
+
+        public static Producto Nulo() => new Producto(new Ean(0), "", 0);
     }
 }

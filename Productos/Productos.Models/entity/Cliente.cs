@@ -5,11 +5,20 @@ using Productos.Models;
 
 namespace Productos.Models.entity
 {
+    public class Direccion
+    {
+        public string Calle;
+        public int Altura;
+        public string Localidad;
+        public int CodigoPostal;
+        public string Provincia;
+    }
+
     public class Cliente
     {
         public Cuit Cuit { get; private set; }
         public string Nombre { get; set; }
-
+        public Direccion Domicilio { get; set; }    
         public Cliente(Cuit cuit, string nombre) {
             if (cuit == null)      throw new ArgumentNullException();
             if (nombre == null)    throw new ArgumentNullException();

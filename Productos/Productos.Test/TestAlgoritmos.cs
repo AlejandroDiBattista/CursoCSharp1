@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Productos.Models;
+using System.Linq;
 
 namespace Productos.Test
 {
@@ -12,6 +13,7 @@ namespace Productos.Test
             var a = new Ean(7790520017352);
             var b = new Ean(7792799000011);
         }
+
         [Fact]
         public void Ean_Invalidos()
         {
@@ -34,6 +36,35 @@ namespace Productos.Test
             Assert.Throws<ArgumentOutOfRangeException>(() => new Cuit(40186265850));
 
             Assert.Throws<ArgumentException>(() => new Cuit(20186275850));
+        }
+
+        [Fact]
+        public void Interes_Calcular33() {
+            var importe = new Importe(100);
+            var impInteres = new Importe(133.33);
+            Assert.True(importe.AplicarInteres(1.0/3.0).Equals(impInteres));
+        }
+        [Fact]
+        public void Interes_Calcular67() {
+            var importe = new Importe(100);
+            var impInteres = new Importe(166.67);
+            Assert.True(importe.AplicarInteres(2.0 / 3.0).Equals(impInteres));
+        }
+
+        [Fact]
+        public void Cuotas_Calcular() {
+            var importe = new Importe(100);
+            var aux = new Importe(0);
+            foreach(var item in importe.Cuotas(3)) {
+                aux += item;
+            }
+            Assert.True(importe.Equals(aux));
+        }
+
+        [Fact]
+        public void Descuento_Calcular() {
+            var importe = new Importe(100);
+            Assert.Equal(importe,importe.AplicarInteres(0.1).AplicarDescuento(0.1));
         }
     }
 

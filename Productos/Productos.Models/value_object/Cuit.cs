@@ -18,10 +18,11 @@ namespace Productos.Models
         public override string ToString() => $"{valor:N13}";
         public override int GetHashCode() => valor.GetHashCode();
 
-        public bool Equals(Cuit otro) => otro?.valor.Equals(valor) ?? false;
         public override bool Equals(object obj) => obj is Cuit otro ? Equals(otro) : false;
-        public static bool operator ==(Cuit a, Cuit b) =>  a.Equals(b);
-        public static bool operator !=(Cuit a, Cuit b) => !a.Equals(b);
+
+        public bool Equals(Cuit otro) => otro?.valor.Equals(valor) ?? false;
+        public static bool operator ==(Cuit a, Cuit b) => a.Equals(b);
+        public static bool operator !=(Cuit a, Cuit b) => a.Equals(b);
 
         static bool EsValido(long numero) {
             int[] factores = { 2, 3, 4, 5, 6, 7, 2, 3, 4, 5 };
