@@ -37,7 +37,9 @@ namespace DSL {
 
         public static IType OnEvent(string evento) {
             if(definiciones == null) definiciones = new List<DynamicProvider>();
-            return new DynamicProvider(evento);
+            var dp = new DynamicProvider(evento);
+            definiciones.Add(dp);
+            return dp;
         }
 
         private DynamicProvider(string evento) {
@@ -66,9 +68,29 @@ namespace DSL {
         }
     }
 
+     class DynamicProviderHost {
+        public IType OnEvent(string evento) {
+            return DynamicProvider.OnEvent(evento);
+        }
+    }
+
+    class XX : DynamicProviderHost {
+        public void Load() {
+            OnEvent("AgregateResource")
+                .WhenType("Resource")
+                .Require("ActiveDirectory")
+                .DefineOperation((contexto, servicios) => {
+                    var s = servicios.Get("ActiveDirectory");
+                    var id = contexto.Id;
+                });
+        }
+    }
+
     class Program {
-        static void Main(string[] args) {
+
+        static void Main() {
             WriteLine("DEMO DSL Fluent Progressive!");
+
 
             DynamicProvider
                 .OnEvent("AgregateResource")
@@ -99,6 +121,14 @@ namespace DSL {
                 .OnEvent("XXX")
                     .WhenType("RRR")
                     .DefineOperation((c, s) => { });
+
+            DynamicProvider
+                .OnEvent("XXXX")
+                    .WhenType("YYYY")
+                        .Require("AAA")
+                        .Require("BBBB")
+                    .DefineOperation((c, s) => { });
+
             ReadLine();
         }
     }
