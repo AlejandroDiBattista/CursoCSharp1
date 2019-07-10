@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluent.Test", "DemoFluent\Fluent.Test\Fluent.Test.csproj", "{C45E625E-E4E7-4E7B-AA67-D681DA52351E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D78386D0-2F16-4A3C-AE32-1D60E946B832} = {D78386D0-2F16-4A3C-AE32-1D60E946B832}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluent.Modelo", "DemoFluent\Fluent.Modelo\Fluent.Modelo.csproj", "{D78386D0-2F16-4A3C-AE32-1D60E946B832}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C45E625E-E4E7-4E7B-AA67-D681DA52351E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C45E625E-E4E7-4E7B-AA67-D681DA52351E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C45E625E-E4E7-4E7B-AA67-D681DA52351E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C45E625E-E4E7-4E7B-AA67-D681DA52351E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D78386D0-2F16-4A3C-AE32-1D60E946B832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D78386D0-2F16-4A3C-AE32-1D60E946B832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D78386D0-2F16-4A3C-AE32-1D60E946B832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D78386D0-2F16-4A3C-AE32-1D60E946B832}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9771DBF4-7D62-4F52-B4D0-68C78FBCE702}
+	EndGlobalSection
+EndGlobal
