@@ -78,7 +78,7 @@ namespace DSL {
         public void Load() {
             OnEvent("AgregateResource")
                 .WhenType("Resource")
-                .Require("ActiveDirectory")
+                    .Require("ActiveDirectory")
                 .DefineOperation((contexto, servicios) => {
                     var s = servicios.Get("ActiveDirectory");
                     var id = contexto.Id;
@@ -87,10 +87,8 @@ namespace DSL {
     }
 
     class Program {
-
         static void Main() {
             WriteLine("DEMO DSL Fluent Progressive!");
-
 
             DynamicProvider
                 .OnEvent("AgregateResource")
