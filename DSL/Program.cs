@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using static System.Console;
+using CSScriptLibrary;
 
 namespace DSL {
 
@@ -21,7 +22,7 @@ namespace DSL {
     }
 
     interface IOperation {
-        void DefineOperation(Operation accion);
+        IOperation DefineOperation(Operation accion);
     }
 
     delegate void Operation(IContext contexto, IService servicio);
@@ -29,9 +30,8 @@ namespace DSL {
     class DynamicProvider: IType, IRequire, IOperation {
         public string Evento = null;
         public string Tipo   = null;
-
-        public List<String> Servicios = new List<String>();
-        public Operation Operacion = null;
+        public List<String>    Servicios   = new List<String>();
+        public List<Operation> Operaciones = new List<Operation>();
 
         private static List<DynamicProvider> definiciones = null;
 
@@ -62,9 +62,11 @@ namespace DSL {
             return this;
         }
 
-        public void DefineOperation(Operation operacion) {
+        public IOperation DefineOperation(Operation operacion) {
             WriteLine($" Ejecute\n   [{operacion}]");
             WriteLine();
+            Operaciones.Add(operacion);
+            return this;
         }
     }
 
@@ -87,6 +89,9 @@ namespace DSL {
     }
 
     class Program {
+
+        
+
         static void Main() {
             WriteLine("DEMO DSL Fluent Progressive!");
 
@@ -96,6 +101,10 @@ namespace DSL {
                     .Require("ActiveDirectory")
                     .DefineOperation((contexto, servicios) => {
                         var s  = servicios.Get("ActiveDirectory");
+                        var id = contexto.Id;
+                    })
+                    .DefineOperation((contexto, servicios) => {
+                        var s = servicios.Get("ActiveDirectory");
                         var id = contexto.Id;
                     });
 
@@ -126,6 +135,31 @@ namespace DSL {
                         .Require("AAA")
                         .Require("BBBB")
                     .DefineOperation((c, s) => { });
+
+
+            CSScript.EvaluatorConfig.Engine = EvaluatorEngine.Roslyn;
+            //EvaluatorEngine.Mono;
+            //EvaluatorEngine.CodeDom;
+
+            var sqr = CSScript.Evaluator
+                              .CreateDelegate(@"int Sqr(int a)
+                                    {
+                                        return a * a;
+                                    }");
+
+            var r = sqr(3);
+
+            //dynamic script = CSScript.LoadCode(
+            //               @"using System.Console;
+            //                 public class Script
+            //                 {
+            //                     public void SayHello(string greeting)
+            //                     {
+            //                         Console.WriteLine(""Greeting: "" + greeting);
+            //                     }
+            //                 }")
+            //                 .CreateObject("*");
+            //script.SayHello("Hello World!");
 
             ReadLine();
         }
