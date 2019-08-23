@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Prueba2 {
+
     public abstract class Padre {
         public string A { get; set; }
         public string B { get; set; }
@@ -30,8 +31,7 @@ namespace Prueba2 {
             }
         }
     }
-
-
+    
     public class Hijo : Padre { }
 
     public class Hija : Padre, IEquatable<Hija> {
@@ -41,7 +41,6 @@ namespace Prueba2 {
         
     }
     
-
     public class Nieto : Hijo { }
 
     public class Nieta : Padre, IEquatable<Nieta> {
@@ -50,7 +49,6 @@ namespace Prueba2 {
         }
     }
     
-
     public static class Program
     {
         static void Main(string[] args)
