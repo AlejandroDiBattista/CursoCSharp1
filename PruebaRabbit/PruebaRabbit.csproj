@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <StartupObject>Prueba2.Program</StartupObject>
+    <StartupObject>PruebaRabbit.Programa</StartupObject>
     <RootNamespace>PruebaRabbit</RootNamespace>
     <AssemblyName>PruebaRabbit</AssemblyName>
   </PropertyGroup>
