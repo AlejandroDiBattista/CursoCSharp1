@@ -1,31 +1,31 @@
 DUDAS
 
-IRabbitEntityRelation
-- RelationId / RelationTypeId
-- OwnerRelationId / RelatedId
-- PropertyBags
+// IRabbitEntityRelation
+// - RelationId / RelationTypeId
+// - OwnerRelationId / RelatedId
+// - PropertyBags
 
-IStatusManagerWithDeleteManagement (Es usado para TypeCast pero nunca es asignado)
+// IStatusManagerWithDeleteManagement (Es usado para TypeCast pero nunca es asignado)
 
-ConfigurationTypeBase
-- Equals con obj.GetType() != GetType()
-
-
-FER
--AccountNotificationTemplateModel
-
--FallbackDictionary
-	Implementacion EQUALS sin considerar NULL
-
--UserRepositoryExtensions
-	usa un Switch/case para identificar una Interface hijo ¯\_(ツ)_/¯
-
-	Igual en ↣ AccountsController > GetWorkWithSection
+// ConfigurationTypeBase
+// - Equals con obj.GetType() != GetType()
 
 
-Equal y GetHashCode repite funcionalidad de la clase base
-C:\Dev\RabbitDefault\src\Algacom.Rabbit.R2.Kernel\EntityIdBase.cs
-AccountId >> 
+// FER
+// -AccountNotificationTemplateModel
+
+// -FallbackDictionary
+// 	Implementacion EQUALS sin considerar NULL
+
+// -UserRepositoryExtensions
+// 	usa un Switch/case para identificar una Interface hijo ¯\_(ツ)_/¯
+
+// 	Igual en ↣ AccountsController > GetWorkWithSection
+
+
+// Equal y GetHashCode repite funcionalidad de la clase base
+// C:\Dev\RabbitDefault\src\Algacom.Rabbit.R2.Kernel\EntityIdBase.cs
+// AccountId >> 
 
 	public override bool Equals(object obj) {
 	    return obj is AccountId accountId && base.Equals(obj) && Id.Equals(accountId.Id, StringComparison.InvariantCultureIgnoreCase);
@@ -38,7 +38,7 @@ AccountId >>
 	    return hashCode;
 	}
 
-EntityIdBase >> 
+// EntityIdBase >> 
 
 	public override bool Equals(object obj) {
 	    return obj is EntityIdBase @base && Id.Equals(@base.Id, StringComparison.InvariantCultureIgnoreCase);
@@ -47,3 +47,7 @@ EntityIdBase >>
 	public override int GetHashCode() {
 		return 2108858624 + EqualityComparer<string>.Default.GetHashCode(Id);
 	}
+
+	// C:\Dev\RabbitDefault\src\Algacom.Rabbit.R2.Kernel\Relations\RabbitEntityRelation.cs
+
+	// Hay varios lugares en donde no compara que los argumentos sean nulos
