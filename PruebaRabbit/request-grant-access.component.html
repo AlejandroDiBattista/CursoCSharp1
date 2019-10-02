@@ -1,0 +1,78 @@
+<div class="card">
+    <div class="card-body">
+        <h2 i18n="@@request-grant-access-title" *ngIf="!isGrantAccess">Request Access</h2>
+        <h2 i18n="@@request-grant-access-beneficiary-title" *ngIf="isGrantAccess">Grant Access</h2>
+        <form id="request-grant-access-form" (ngSubmit)="onSubmit()" [formGroup]="requestAccessForm">
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" formControlName="isPermanent" id="request-grant-access-is-permanent-{{resourceId}}">
+                            <label class="custom-control-label" for="request-grant-access-is-permanent-{{resourceId}}" i18n="@@request-grant-access-is-permanent">Is Permanent</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="request-grant-access-timespan" i18n="@@request-grant-access-timespan">Access Timespan</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="" bsDaterangepicker formControlName="timespan" id="request-grant-access-range" #dpStart="bsDaterangepicker" />
+                            <button class="input-group-addon" (click)="dpStart.toggle()" type="button"> <span class="fas fa-calendar-alt"></span> </button>
+                        </div>
+                        <div *ngIf="requestAccessForm.controls.timespan.errors" class="rb-invalid-feedback"> 
+                            <span *ngIf="requestAccessForm.controls.timespan.errors.required" i18n="@@request-grant-access-timespan-required">Access timespan is required.</span> <span *ngIf="requestAccessForm.controls.timespan.errors.dateInThePast" i18n="@@request-grant-access-timespan-in-the-past">Access timespan must be in the future.</span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="request-grant-access-access-type" i18n="@@request-grant-access-access-type">Access Type</label>
+                        <ng-select [items]="accessTypes" bindValue="accessTypeId" bindLabel="name" id="request-grant-access-access-type" placeholder="Select an access type" formControlName="accessTypeId"> </ng-select>
+                        <div *ngIf="requestAccessForm.controls.accessTypeId.touched && requestAccessForm.controls.accessTypeId.errors" class="rb-invalid-feedback"> 
+                            <span *ngIf="requestAccessForm.controls.accessTypeId.errors.required" i18n="@@request-grant-access-access-type-required">Access type is required.</span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="request-grant-access-beneficiaries" i18n="@@request-grant-access-beneficiaries">Beneficiaries</label>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" formControlName="beneficiaryIsCurrentUser" id="request-grant-access-to-current-user-{{resourceId}}">
+                            <label class="custom-control-label" for="request-grant-access-to-current-user-{{resourceId}}" i18n="@@request-grant-access-to-current-user">Current User</label>
+                        </div>
+                        <app-relation-dropdown-editor [form]="requestAccessForm" [dropDownConfig]="beneficiaryPickerConfig" [metadata]="beneficiaryPickerMetadata"></app-relation-dropdown-editor>
+                        <div *ngIf="beneficiariesWithConflicts" class="rb-invalid-feedback"> 
+                            <span *ngIf="requestAccessForm.controls.beneficiaries.errors?.required" i18n="@@request-grant-access-beneficiaries-required">At least one beneficiary must be selected.</span> <span *ngIf="requestAccessForm.controls.beneficiaries.errors?.alreadyBeneficiaryWithAccess" i18n="@@request-grant-access-beneficiaries-with-conflict">One or more beneficiaries already have access to the resource.</span> <span *ngIf="requestAccessForm.controls.beneficiaryIsCurrentUser.errors?.alreadyBeneficiaryWithAccess && requestAccessForm.controls.beneficiaryIsCurrentUser.value && beneficiariesWithConflicts && currentUserConflictsError" i18n="@@request-grant-access-current-user-with-conflict" title="requestAccessForm.controls.beneficiaries.value[0].error">Current user cannot request access to the resource. {{currentUserConflictsError}}</span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="request-grant-access-business-justification" i18n="@@request-grant-access-business-justification">Business Justification</label>
+                        <textarea class="form-control" id="request-grant-access-business-justification" class="form-control" formControlName="businessJustification"></textarea>
+                        <div *ngIf="requestAccessForm.controls.businessJustification.touched && requestAccessForm.controls.businessJustification.errors" class="rb-invalid-feedback"> 
+                            <span *ngIf="requestAccessForm.controls.businessJustification.errors.required" i18n="@@request-grant-access-business-justification-required">Business justification is required.</span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row mt-1 flex-row-reverse">
+                <div class="col-md-3 col-xl-2">
+                    <button [disabled]="requestAccessForm.invalid || requestPending" type="submit" class="btn btn-primary btn-block" id="btn-request-access" *ngIf="!isGrantAccess" i18n="@@request-grant-access-request-access-button-title">Request Access</button>
+                    <button [disabled]="requestAccessForm.invalid || requestPending" type="submit" class="btn btn-primary btn-block" id="btn-request-access" *ngIf="isGrantAccess" i18n="@@request-grant-access-beneficiary-access-button-title">Grant Access</button>
+                </div>
+                <div class="col-md-3 col-xl-2">
+                    <button [disabled]="requestPending" type="button" class="btn btn-primary btn-block btn-light" id="btn-request-access-cancel" i18n="@@request-grant-access-cancel-button-title" (click)="cancel()">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

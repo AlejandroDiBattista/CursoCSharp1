@@ -1,0 +1,18 @@
+<block-ui>
+    <div *ngIf="loaded">
+        <h1 i18n="@@configurationTitle"> Configuration </h1>
+        <h4> Add subtitle </h4>
+        <div class="row" id="configuration-options-editor-container">
+            <form id="configuration-options-form" (ngSubmit)="onConfigurationSubmit()" [formGroup]="configurationOptionsForm" class="w-100 ml-3">
+                <div *ngFor="let optionsItem of configuration.optionsItems" class="mb-4">
+                    <app-property-bag-editor [propertyBag]="optionsItem.options" [metadata]="optionsItem.metadata" [form]="getFormGroup(optionsItem.metadata.type)" class="property-bag-editor" [propertyFilter]="propertyFilter"> </app-property-bag-editor>
+                </div>
+                <div class="form-row mt-1 flex-row-reverse">
+                    <div class="col-12 col-md-3 col-xl-2">
+                        <button type="submit" class="btn btn-primary btn-block" id="btn-save-configuration-options">Next</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</block-ui>

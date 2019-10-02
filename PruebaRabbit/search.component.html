@@ -1,0 +1,23 @@
+<div>
+    <tabset #staticTabs>
+        <tab [heading]="searchEditor.name" class="pt-3" (select)="refreshFilter(searchEditor.type)" *ngFor="let searchEditor of searchEditors">
+            <form *ngIf="searchEditor.form" [formGroup]="searchEditor.form" (ngSubmit)="search(true)">
+                <app-property-bag-editor [propertyBag]="searchEditor.editor.object" [metadata]="searchEditor.editor.metadata" [form]="searchEditor.form" [propertyFilter]="propertyFilter" class="property-bag-editor"> </app-property-bag-editor>
+                <div class="form-row mt-1">
+                    <div class="col-12 col-md-3 col-xl-2">
+                        <button type="submit" [disabled]="searchButtonDisabled" class="btn btn-primary btn-block" id="search-button-{{searchEditor.type}}">Search</button>
+                    </div>
+                </div>
+            </form>
+        </tab>
+    </tabset>
+    <div class="pt-3">
+        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="2" [infiniteScrollThrottle]="300" [infiniteScrollDisabled]="infiniteScrollDisabled" (scrolled)="onScroll()" id='search-result-list'>
+            <div *ngFor="let item of searchItems">
+                <app-search-result-dynamic [type]="item.viewType" [item]="item"></app-search-result-dynamic>
+            </div>
+            <div *ngIf="searchResult != null && searchItems.length == 0"> <span>The search yielded no results</span> </div>
+            <div *ngIf="showLoadMore"> <a href="javascript:void(0);" (click)="search()"> Load more...</a> </div>
+        </div>
+    </div>
+</div>
