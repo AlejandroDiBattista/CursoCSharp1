@@ -31,6 +31,7 @@ namespace Iterador4
 		public bool MoveNext() => ++posicion < datos.Count;
 		public T Current => datos[posicion];
 	}
+	
 	public class EnumeradorInvertido<T> : IEnumerar<T> where T : new()
 	{
 		List<T> copia;

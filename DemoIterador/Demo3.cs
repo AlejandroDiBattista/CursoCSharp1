@@ -12,10 +12,12 @@ namespace Iterador3
 		bool MoveNext();
 		int Current { get; }
 	}
+
 	public interface IEnumerador
 	{
 		IEnumerar GetEnumerar();
 	}
+	
 	public class Enumerador : IEnumerar
 	{
 		List<int> datos;
@@ -29,6 +31,7 @@ namespace Iterador3
 		public bool MoveNext() => ++posicion < datos.Count;
 		public int Current => datos[posicion];
 	}
+
 	public class Lista : IEnumerador
 	{
 		List<int> datos = new List<int>();
@@ -39,6 +42,7 @@ namespace Iterador3
 		public void Agregar(int a) => datos.Add(a);
 		public IEnumerar GetEnumerar() => new Enumerador(datos);
 	}
+
 	public static class Extensiones
 	{
 		public static void Recorrer(this IEnumerador lista) => Recorrer(lista.GetEnumerar());
@@ -51,6 +55,7 @@ namespace Iterador3
 		}
 
 	}
+	
 	static class Demo
 	{
 		static void Main(string[] args)

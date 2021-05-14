@@ -119,10 +119,8 @@ namespace DemoEnumerator
 			IEnumerador m1 = new Filtrar( new Pares( new Numeros( 10 ) ), i => i < 7 );
 			Mostrar( m1, "INSTANCIAS ANIDADAS" );
 
-
 			IEnumerador m2 = FiltrarE( ParesE( NumerosE( 10 ) ), i => i < 7 );
 			Mostrar( m2, "FUNCIONES ANIDADAS" );
-
 
 			IEnumerador m3 = new Numeros( 10 );
 			m3 = new Pares( m3 );
@@ -144,8 +142,8 @@ namespace DemoEnumerator
 
 			Console.ReadLine();
 		}
-		static void ComparacionEntreEnumeradorVSYieldReturn( )
-		{
+
+		static void ComparacionEntreEnumeradorVSYieldReturn( ){
 			Console.WriteLine( "DEMOSTRACIÓN Ejecución LAZY" );
 
 

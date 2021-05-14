@@ -44,6 +44,7 @@ namespace Arquitecturas
             Console.WriteLine("DESPUES");
         }
     }
+
     abstract class Comando : IComando {
         public IConeccion Coneccion { get; set; }
 
@@ -81,19 +82,6 @@ namespace Arquitecturas
         protected override string GenerarSQL => $"DELETE {Tabla} WHERE id = {valores["id"]}";
     }
 
-    static class Storage
-    {
-        static void Guardar(object entidad)
-        {
-            IComando cmd;
-           
-
- 
-            cmd.Ejecutar();
-
-        }
-    }
-
     class Producto
     {
         public Guid? ID { get; private set; }
@@ -112,12 +100,12 @@ namespace Arquitecturas
         public void Guardar()
         {
             IComando cmd;
-            if(ID == null)
+            if(ID == Guid.Empty)
                 cmd = Demo.container.GetInstance<IAgregarComando>();
             else
                 cmd = Demo.container.GetInstance<IActualizarComando>();
 
-            ID = ID ?? Guid.NewGuid();
+            ID =  Guid.NewGuid();
 
             cmd.Tabla = nameof(Producto);
 
@@ -150,6 +138,7 @@ namespace Arquitecturas
             container.Register<IActualizarComando,  ActualizarComando>();
             container.Register<IBorrarComando,      BorrarComando>();
             //container.RegisterDecorator<IComando,   MostrarComando>();
+            container.Verify();
         }
 
         static void Main(string[] args)
@@ -158,7 +147,7 @@ namespace Arquitecturas
             var p = new Producto(Guid.Empty, "Coca Cola", 100);
 
             Console.WriteLine("\n · Guardar (1º vez)..."); 
-            Storage.Guardar(p);
+            p.Guardar();
 
             Console.ReadLine();
 

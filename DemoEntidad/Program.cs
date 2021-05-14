@@ -21,8 +21,7 @@ namespace DemoEntidad
 
     class Coneccion : IConeccion {
         public void Ejecutar(string sql) => Console.WriteLine($"Ejecutando > {sql}");
-        public IEnumerable<object> Consultar(string sql)
-        {
+        public IEnumerable<object> Consultar(string sql) {
             yield return new { Guid = "", Descripcion = "Coca Cola",  Precio = 80 };
             yield return new { Guid = "", Descripcion = "Pepsi Cola", Precio = 70 };
         }
@@ -79,8 +78,8 @@ namespace DemoEntidad
         static void Pausa() {
             Console.Write("Pulse ENTER para continuar..."); Console.ReadLine();
         }
-        static void Main(string[] args)
-        {
+        
+        static void Main(string[] args){
             Console.WriteLine("DEMO >> DbSet");
 
             var contenedor = new SimpleInjector.Container();

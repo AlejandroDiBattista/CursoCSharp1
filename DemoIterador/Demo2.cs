@@ -57,6 +57,7 @@ namespace Iterador2
 
 			Console.ReadLine();
 		}
+		
 		static Lista TraerLista()
 		{
 			var lista = new Lista();

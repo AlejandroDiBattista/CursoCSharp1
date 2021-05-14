@@ -29,6 +29,7 @@ namespace Iterador6
 			tmp.Reverse();
 			return tmp;
 		}
+		
 		IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 	}
 

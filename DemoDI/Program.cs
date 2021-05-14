@@ -67,8 +67,10 @@ namespace DemoDI
     class Program {
         
         static void Main(string[] args) {
-            Console.WriteLine("DEMO DI » Composicion\n");
+            Console.Clear();
+            Console.WriteLine("DEMO DI\n\n");
 
+            Console.WriteLine(" » Configurar \n");
             var c = new Container();
             c.Register<Doble>();
 
@@ -79,13 +81,14 @@ namespace DemoDI
 
             c.Register<IUno, Uno>(Lifestyle.Singleton);
             c.Register<IDos, Dos>();
-
             c.Verify();
 
             Console.WriteLine(">>> Con ID");
-
             var d = c.GetInstance<Doble>();
             d.Mostrar();
+
+
+            Console.WriteLine("\n\n>>> A mano");
 
             var n1 = new Uno();
             var ds = new Despues(n1);
@@ -93,7 +96,6 @@ namespace DemoDI
             var n2 = new Dos(an);
             var e = new Doble(an, n2);
 
-            Console.WriteLine("\n\n>>> A mano");
             e.Mostrar();
             Console.Write("\nPulsa ENTER para terminar..."); Console.ReadLine();
         }

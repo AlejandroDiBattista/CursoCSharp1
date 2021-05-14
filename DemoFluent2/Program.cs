@@ -62,7 +62,6 @@ namespace DemoFluent2
             Console.WriteLine($"  > ddd|MMM    {DateTime.Now:ddd|MMM}");
             Console.WriteLine($"  > dddd|MMMM  {DateTime.Now:dddd|MMMM}");
             Console.WriteLine($"Saludo :{"Hola Ñato"}" );
-
         }
     }
 }

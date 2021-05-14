@@ -5,15 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 
-namespace DemoHTTP
-{
-    class RangoValidoAttribute : Attribute
-    {
+namespace DemoHTTP {
+    class RangoValidoAttribute : Attribute{
         public int Minimo { get; set; }
         public int Maximo { get; set; }
 
-        public RangoValidoAttribute(int min, int max)
-        {
+        public RangoValidoAttribute(int min, int max){
             Minimo = min;
             Maximo = max;
         }
@@ -21,12 +18,8 @@ namespace DemoHTTP
         public int Rango => Maximo - Minimo;
     }
 
-
     [DataContract]
-    class Persona
-    {
-        
-
+    class Persona {
         private int _edad;
 
         [RangoValido(18,65)]
@@ -49,21 +42,17 @@ namespace DemoHTTP
         [RangoValido(20000,  80000)]
         public int Sueldo { get; set; }
 
-        public Persona(int Edad, bool Vivo)
-        {
+        public Persona(int Edad, bool Vivo){
             this.Edad = Edad;
             this.Vivo = Vivo;
         }
 
-        public Persona Matar()
-        {
+        public Persona Matar(){
             Vivo = false;
             return this;
         }
 
-        public Persona CumplirAño()
-        {
-
+        public Persona CumplirAño(){
             var r = this.GetType().GetProperty(nameof(Edad)).CustomAttributes.OfType<RangoValidoAttribute>().FirstOrDefault();
 
             if (Edad < r.Maximo)
@@ -71,8 +60,7 @@ namespace DemoHTTP
 
             return this;
         }
-        public Persona Aumentar(int incremento)
-        {
+        public Persona Aumentar(int incremento){
             var r = this.GetType().GetProperty(nameof(Sueldo)).CustomAttributes.OfType<RangoValidoAttribute>().FirstOrDefault();
 
             var nuevo = Sueldo + incremento;
@@ -82,8 +70,7 @@ namespace DemoHTTP
             return this;
         }
 
-        static void Main(string[] args)
-        {
+        static void Main(string[] args){
             var a = new Persona(50, true);
             a.CumplirAño().Matar().CumplirAño().CumplirAño();
 

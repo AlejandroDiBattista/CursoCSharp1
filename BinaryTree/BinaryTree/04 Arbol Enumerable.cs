@@ -21,17 +21,20 @@ namespace ArbolBinarioEnumerable
                 ( derecha ?? (derecha = new Arbol()) ).Agregar(valor);
             }
         }
+        
         public void Recorrer(int nivel) {
             izquierda?.Recorrer(nivel+1);
             if (dato != null) Console.WriteLine($" { new String(' ', nivel*3) }- {dato}");
             derecha?.Recorrer(nivel +1);
         }
+        
         public void Recorrer()
         {
             izquierda?.Recorrer();
             if (dato != null) Console.WriteLine($" - {dato}");
             derecha?.Recorrer();
         }
+
         public void RecorrerInterativo()
         {
             if (dato == null) return;

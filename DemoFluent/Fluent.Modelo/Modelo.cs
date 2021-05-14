@@ -34,7 +34,6 @@ namespace Fluente
 
             public Factura() { }
             public void Agregar(Compra compra) => compras.Add(compra);
-
         }
     }
 }
